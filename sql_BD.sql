@@ -1,0 +1,47 @@
+DROP TABLE IF EXISTS cliente;
+DROP TABLE IF EXISTS profissional;
+DROP TABLE IF EXISTS administrador;
+DROP TABLE IF EXISTS consulta;
+
+CREATE TABLE cliente (
+	email VARCHAR[40] NOT NULL,
+	senha VARCHAR[30] NOT NULL,
+	cpf INT,
+	nome VARCHAR[50] NOT NULL,
+	telefone INT,
+	sexo CHAR NOT NULL,
+	data_nascimento DATE,
+	CONSTRAINT PK_CLIENTE PRIMARY KEY (cpf),
+	CONSTRAINT UNIQUE_email_senha UNIQUE (email, senha),
+	CONSTRAINT sexo_check CHECK (sexo in ('M', 'F', 'N'))
+);
+
+CREATE TABLE profisional(
+	email varchar[40] NOT NULL,
+	senha varchar[30] NOT NULL,
+	cpf int,
+	nome varchar[50] NOT NULL,
+	AreaConhecimento char NOT NULL,
+	especialidade char NOT NULL,
+	/*Definir como será feita a parte do 
+	pdf, para então escrever a linha de armazenamento do PDF*/
+	CONSTRAINT PK_PROFISSIONAL PRIMARY KEY (cpf)
+);
+
+CREATE TABLE consulta(
+    num_consulta serial,
+	dia_horario TIME,
+	profissional int NOT NULL,
+	cancelada bool DEFAULT FALSE,
+	cliente int NOT NULL,
+	CONSTRAINT PK_CONSULTA PRIMARY KEY (num_consulta),
+	CONSTRAINT FK_CONSULTA_PROFISSIONAL FOREIGN KEY (profissional)
+		REFERENCES profisional(cpf),
+	CONSTRAINT FK_CONSULTA_CLIENTE FOREIGN KEY (cliente)
+		REFERENCES cliente(cliente)
+);
+
+create table IF NOT EXISTS administrador (
+	email VARCHAR [60] NOT NULL, senha VARCHAR[24] NOT NULL, nome VARCHAR[50] NOT NULL,
+	CONSTRAINT PK_ADMIN PRIMARY KEY(nome)
+)
