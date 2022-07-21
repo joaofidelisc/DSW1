@@ -1,14 +1,15 @@
+DROP TABLE IF EXISTS consulta;
 DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;
 DROP TABLE IF EXISTS administrador;
-DROP TABLE IF EXISTS consulta;
+
 
 CREATE TABLE cliente (
 	email VARCHAR[40] NOT NULL,
 	senha VARCHAR[30] NOT NULL,
-	cpf INT,
+	cpf INT8,
 	nome VARCHAR[50] NOT NULL,
-	telefone INT,
+	telefone INT8,
 	sexo CHAR NOT NULL,
 	data_nascimento DATE,
 	CONSTRAINT PK_CLIENTE PRIMARY KEY (cpf),
@@ -16,11 +17,11 @@ CREATE TABLE cliente (
 	CONSTRAINT sexo_check CHECK (sexo in ('M', 'F', 'N'))
 );
 
-CREATE TABLE profisional(
-	email varchar[40] NOT NULL,
-	senha varchar[30] NOT NULL,
-	cpf int,
-	nome varchar[50] NOT NULL,
+CREATE TABLE profissional(
+	email varchar(40) NOT NULL,
+	senha varchar(30) NOT NULL,
+	cpf int8,
+	nome varchar(50) NOT NULL,
 	AreaConhecimento char NOT NULL,
 	especialidade char NOT NULL,
 	/*Definir como será feita a parte do 
@@ -36,12 +37,14 @@ CREATE TABLE consulta(
 	cliente int NOT NULL,
 	CONSTRAINT PK_CONSULTA PRIMARY KEY (num_consulta),
 	CONSTRAINT FK_CONSULTA_PROFISSIONAL FOREIGN KEY (profissional)
-		REFERENCES profisional(cpf),
+		REFERENCES profissional(cpf),
 	CONSTRAINT FK_CONSULTA_CLIENTE FOREIGN KEY (cliente)
-		REFERENCES cliente(cliente)
+		REFERENCES cliente(cpf)
 );
 
 create table IF NOT EXISTS administrador (
-	email VARCHAR [60] NOT NULL, senha VARCHAR[24] NOT NULL, nome VARCHAR[50] NOT NULL,
+	email VARCHAR (60) NOT NULL,
+    senha VARCHAR (24) NOT NULL, 
+    nome VARCHAR (50) NOT NULL,
 	CONSTRAINT PK_ADMIN PRIMARY KEY(nome)
-)
+);
