@@ -5,10 +5,10 @@ DROP TABLE IF EXISTS administrador;
 
 
 CREATE TABLE cliente (
-	email VARCHAR[40] NOT NULL,
-	senha VARCHAR[30] NOT NULL,
+	email VARCHAR(40) NOT NULL,
+	senha VARCHAR(30) NOT NULL,
 	cpf INT8,
-	nome VARCHAR[50] NOT NULL,
+	nome VARCHAR(50) NOT NULL,
 	telefone INT8,
 	sexo CHAR NOT NULL,
 	data_nascimento DATE,
@@ -22,10 +22,8 @@ CREATE TABLE profissional(
 	senha varchar(30) NOT NULL,
 	cpf int8,
 	nome varchar(50) NOT NULL,
-	AreaConhecimento char NOT NULL,
+	areaConhecimento char NOT NULL,
 	especialidade char NOT NULL,
-	/*Definir como será feita a parte do 
-	pdf, para então escrever a linha de armazenamento do PDF*/
 	CONSTRAINT PK_PROFISSIONAL PRIMARY KEY (cpf)
 );
 
