@@ -29,7 +29,8 @@ CREATE TABLE profissional(
 
 CREATE TABLE consulta(
     num_consulta serial,
-	dia_horario TIME,
+	dia DATE,
+    horario TIME,
 	profissional int NOT NULL,
 	cancelada bool DEFAULT FALSE,
 	cliente int NOT NULL,
