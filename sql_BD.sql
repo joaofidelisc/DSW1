@@ -20,7 +20,7 @@ CREATE TABLE cliente (
 CREATE TABLE profissional(
 	email varchar(40) NOT NULL,
 	senha varchar(30) NOT NULL,
-	cpf BIGINT,
+	cpf BIGINT NOT NULL,
 	nome varchar(50) NOT NULL,
 	areaConhecimento VARCHAR(20) NOT NULL,
 	especialidade VARCHAR(20) NOT NULL,
@@ -35,9 +35,9 @@ CREATE TABLE consulta(
 	cpf_cliente BIGINT NOT NULL,
 	cancelada bool DEFAULT FALSE,
 	CONSTRAINT PK_CONSULTA PRIMARY KEY (num_consulta),
-	CONSTRAINT FK_CONSULTA_PROFISSIONAL FOREIGN KEY (profissional)
+	CONSTRAINT FK_CONSULTA_PROFISSIONAL FOREIGN KEY (cpf_profissional)
 		REFERENCES profissional(cpf),
-	CONSTRAINT FK_CONSULTA_CLIENTE FOREIGN KEY (cliente)
+	CONSTRAINT FK_CONSULTA_CLIENTE FOREIGN KEY (cpf_cliente)
 		REFERENCES cliente(cpf)
 );
 
