@@ -40,7 +40,7 @@ public class ConsultaDAO extends Dao {
 
         List<Consulta> listaConsultas = new ArrayList<>();
 
-        String sql = "SELECT * from Consulta order by cpf"; //fazer ordenação por consulta depois
+        String sql = "SELECT * from Consulta order by dia_horario"; //fazer ordenação por consulta depois
 
         try {
             Connection conn = this.getConnection();
@@ -48,35 +48,32 @@ public class ConsultaDAO extends Dao {
 
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                long cpf = resultSet.getLong("cpf");
-                String email = resultSet.getString("email");
-                String senha = resultSet.getString("senha");
-                String nome = resultSet.getString("nome");
-                String areaDeConhecimento = resultSet.getString("areaDeConhecimento");
-                String especialidade = resultSet.getString("especialidade");
-                String localPDF = resultSet.getString("localPDF");
+                long num_consulta = resultSet.getLong("num_consulta");
+                Date dia_horario = resultSet.getDate("dia_horario");
+                int profissional = resultSet.getInt("profissional");
+                boolean cancelada = resultSet.getBoolean("cancelada");
+                int cliente = resultSet.getInt("cliente");
                 
-                Consulta consulta = new Consulta(email, senha, cpf, nome, areaDeConhecimento, especialidade, localPDF);
-                listaProfissionais.add(consulta);
+                Consulta consulta = new Consulta(num_consulta, dia_horario, profissional, cancelada, cliente);
+                listaConsultas.add(consulta);
             }
-
             resultSet.close();
             statement.close();
             conn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return listaProfissionais;
+        return listaConsultas;
     }
 
     public void delete(Consulta consulta) {
-        String sql = "DELETE FROM Consulta where cpf = ?";
+        String sql = "DELETE FROM Consulta where dia_horario = ?";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setLong(1, consulta.getCpf());
+            statement.setDate(1, consulta.getDia_horario());
             statement.executeUpdate();
 
             statement.close();
@@ -88,17 +85,18 @@ public class ConsultaDAO extends Dao {
 
 
     public void update(Consulta consulta) {
-        String sql = "UPDATE Consulta SET email = ?, senha = ?, nome = ?, areaDeConhecimento = ?, especialidade = ?, localPDF = ?";
-        sql += " WHERE cpf = ?";
+        String sql = "UPDATE Consulta SET num_consulta = ?, dia_horario = ?, profissional = ?, cancelada = ?, cliente = ?";
+        sql += " WHERE num_consulta = ?";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setString(1, consulta.getEmail());
-            statement.setString(2, consulta.getSenha());
-            statement.setString(3, consulta.getNome());
-            statement.setLong(4, consulta.getCpf());
+            statement.setLong(1, consulta.getNum_consulta());
+            statement.setDate(2, consulta.getDia_horario());
+            statement.setInt(3, consulta.getProfissional());
+            statement.setBoolean(4, consulta.isCancelada());
+            statement.setInt(5, consulta.getCliente());
             statement.executeUpdate();
 
             statement.close();
@@ -108,29 +106,26 @@ public class ConsultaDAO extends Dao {
         }
     }
 
-    public Consulta get(long cpf_parametro) {
+    public Consulta get(long num_consulta) {
         Consulta clt = null;
 
-        String sql = "SELECT * from Consulta where cpf = ?";
+        String sql = "SELECT * from Consulta where num_consulta = ?";
 
         try {
             Connection conn = this.getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
 
-            statement.setLong(1, cpf_parametro);
+            statement.setLong(1, num_consulta);
             ResultSet resultSet = statement.executeQuery();
             boolean temAlgumRegistro = resultSet.first();
             if ( temAlgumRegistro ) {
-            	String email = resultSet.getString("email");
-            	String senha = resultSet.getString("senha");
-            	long cpf = resultSet.getLong("cpf");
-            	String nome = resultSet.getString("nome");
-            	String areaDeConhecimento = resultSet.getString("areaDeConhecimento");
-            	String especialidade = resultSet.getString("especialidade");
-            	String localPDF = resultSet.getString("localPDF");
+                Long num_consulta = resultSet.getLong("num_consulta");
+                Date dia_horario = resultSet.getDate("dia_horario");
+                int profissional = resultSet.getInt("profissional");
+                boolean cancelada = resultSet. getBoolean("cancelada");
+                int cliente = resultSet.getInt("cliente");
 
-
-                clt = new Consulta(email, senha, cpf, nome, areaDeConhecimento, especialidade, localPDF);
+                clt = new Consulta(num_consulta, dia_horario, profissional, cancelada, cliente);
             }
 
             resultSet.close();
