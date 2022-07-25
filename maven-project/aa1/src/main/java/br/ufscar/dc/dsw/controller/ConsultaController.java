@@ -75,6 +75,14 @@ String action = request.getPathInfo();
 		RequestDispatcher dispatcher = request.getRequestDispatcher("consulta/lista.jsp");
 		dispatcher.forward(request, response);		
 	}
+
+	public void insere(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+				request.setCharacterEncoding("UTF-8");
+        
+				int8 num_consulta = request.getParameter("email");
+				
+	}
 	
 
 }
