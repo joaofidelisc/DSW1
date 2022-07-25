@@ -67,6 +67,11 @@ String action = request.getPathInfo();
 		}
 		
 	}
+
+	public void paginaCadastroConsulta(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+			//pagina q redireciona pra consulta
+	}
 	
 	public void paginaListaConsultas(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{

@@ -1,4 +1,4 @@
-// package br.ufscar.dc.dsw.dao;
+package br.ufscar.dc.dsw.dao;
 
 import java.sql.Connection;
 import java.sql.Date;

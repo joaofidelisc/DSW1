@@ -59,9 +59,4 @@ public class Consulta {
 	public void setCancelada(boolean cancelada) {
 		this.cancelada = cancelada;
 	}
-
-    
-    
-    
-	    
 }
