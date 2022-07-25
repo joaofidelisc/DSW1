@@ -47,18 +47,15 @@ String action = request.getPathInfo();
 		try {
 			switch (action) {   
 				case "/cadastro":
-					//paginaCadastroCliente(request, response);
+					//paginaCadastroConsulta(request, response);
 					break;
 				case "/insercao":
-					//insere(request, response);
-				case "/remocao":
-					//remove(request, response);
-					break;
-				case "/edicao":
-					//paginaEdicaoCliente(request, response);
+					insere(request, response);
+				case "/cancelar":
+					//cancelar(request, response);
 					break;
 				case "/atualizacao":
-					//atualize(request, response);
+					atualize(request, response);
 					break;
 				default:
 					paginaListaConsultas(request, response);
@@ -85,22 +82,54 @@ String action = request.getPathInfo();
 	 * @throws ServletException
 	 * @throws IOException
 	 */
+
 	public void insere(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		request.setCharacterEncoding("UTF-8");
         
 		Long num_consulta = Long.parseLong(request.getParameter("num_consulta"));
 		Date data_consulta = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_consulta"));
-        Time hora_consulta = request.getParameter("hora_consulta");
+        Time hora_consulta = request.getParameter("hora_consulta");								
 		Long cpf_profissional = Long.parseLong(request.getParameter("cpf_profissional"));
 		Long cpf_cliente = Long.parseLong(request.getParameter("cpf_cliente"));
-		boolean cancelada = request.getParameter("cancelada") != null;
+		boolean cancelada = false;							
         
         Consulta consulta = new Consulta(num_consulta, data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
         dao.insert(consulta);
         response.sendRedirect("consulta/lista.jsp");
 				
 	}
+
+	public void cancelar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+				//verificar se ainda tem 3 dias ou mais da consulta, se sim, pode cancelar
+	}
+
+	public void atualize(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException{
+		request.setCharacterEncoding("UTF-8");
+        
+		Long num_consulta = Long.parseLong(request.getParameter("num_consulta"));
+		Date data_consulta = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_consulta"));
+		Time hora_consulta = request.getParameter("hora_consulta");								
+		Long cpf_profissional = Long.parseLong(request.getParameter("cpf_profissional"));
+		Long cpf_cliente = Long.parseLong(request.getParameter("cpf_cliente"));
+
+		boolean cancelada = false;
+			if(request.getParameter("cancelada").equals("true")){
+				cancelada = true;
+			}else{
+				cancelada=false;
+			}					
+				
+		Consulta consulta = new Consulta(num_consulta, data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
+		dao.update(consulta);
+		response.sendRedirect("consulta/lista.jsp");
+	}
+
+
+
+
 	
 
 }
