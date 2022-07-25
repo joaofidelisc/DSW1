@@ -3,7 +3,6 @@ DROP TABLE IF EXISTS cliente;
 DROP TABLE IF EXISTS profissional;
 DROP TABLE IF EXISTS administrador;
 
-
 CREATE TABLE cliente (
 	email VARCHAR(40) NOT NULL,
 	senha VARCHAR(30) NOT NULL,
@@ -20,17 +19,18 @@ CREATE TABLE cliente (
 CREATE TABLE profissional(
 	email varchar(40) NOT NULL,
 	senha varchar(30) NOT NULL,
-	cpf BIGINT NOT NULL,
+	cpf BIGINT,
 	nome varchar(50) NOT NULL,
 	areaConhecimento VARCHAR(20) NOT NULL,
 	especialidade VARCHAR(20) NOT NULL,
+    local_pdf VARCHAR(100) NOT NULL,
 	CONSTRAINT PK_PROFISSIONAL PRIMARY KEY (cpf)
 );
 
 CREATE TABLE consulta(
     num_consulta SERIAL NOT NULL,
 	data_consulta DATE,
-    horario TIME,
+    hora_consulta TIME,
 	cpf_profissional BIGINT NOT NULL,
 	cpf_cliente BIGINT NOT NULL,
 	cancelada bool DEFAULT FALSE,
@@ -47,3 +47,17 @@ create table IF NOT EXISTS administrador (
     nome VARCHAR (50) NOT NULL,
 	CONSTRAINT PK_ADMIN PRIMARY KEY(email)
 );
+
+INSERT INTO CLIENTE VALUES ('joao@mail.com','123',11122233390,'João Fidelis',16955664433, 'M', '10/10/2001');
+INSERT INTO CLIENTE VALUES ('matteus@mail.com','123',11111111190,'Matteus Souza',22922222222, 'M', '02/12/1999');
+
+INSERT INTO PROFISSIONAL VALUES ('luiz@mail.com','123',255255255127, 'Luiz Filipe', 'Medicina', 'Ortopédica', 'curriculo.pdf');
+INSERT INTO PROFISSIONAL VALUES ('italo@mail.com','123',127127127255, 'Italo Ribeiro', 'Psicologia', 'Comportamental', 'curriculo1.pdf');
+
+INSERT INTO CONSULTA VALUES (1, '2022-07-08', '10:00', 127127127255, 11111111190, FALSE);
+INSERT INTO CONSULTA VALUES (2, '2022-07-22','07:00',127127127255, 11111111190, TRUE);
+INSERT INTO CONSULTA VALUES (3, '2022-07-24','16:00',255255255127, 11122233390, FALSE);
+INSERT INTO CONSULTA VALUES (4, '2022-07-25','18:00',127127127255, 11122233390, FALSE);
+INSERT INTO CONSULTA VALUES (5, '2022-07-30','15:00',255255255127, 11122233390, FALSE);
+
+INSERT INTO ADMINISTRADOR VALUES ('sara@mail.com','123','Sara');
