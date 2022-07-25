@@ -129,7 +129,7 @@ public class ClienteController extends HttpServlet {
 		telefone = Long.parseLong(request.getParameter("telefone"));
 		String sexo = request.getParameter("sexo"); 
 		String str = request.getParameter("data_nascimento");
-		Date data_nascimento = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_nascimento"));
+		Date data_nascimento = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data_nascimento"));
 		
 		Cliente cliente = new Cliente(email,senha,cpf,nome, telefone, sexo,data_nascimento);
 		dao.update(cliente);
