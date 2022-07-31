@@ -1,7 +1,10 @@
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="br.ufscar.dc.dsw.dao.ProfissionalDAO"%>
 <%@page import="br.ufscar.dc.dsw.dao.ClienteDAO"%>
 <%@page import="br.ufscar.dc.dsw.domain.Profissional"%>
 <%@page import="br.ufscar.dc.dsw.domain.Cliente"%>
+<%@page import="br.ufscar.dc.dsw.domain.Consulta"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -25,7 +28,7 @@
 	</div>
 	<br>
 	<div>
-		<table class="table">
+		<table class="table align-middle">
 			<thead>
 				<tr>
 					<th scope="col">Data</th>
@@ -35,7 +38,7 @@
 					<th scope="col">Cliente</th>
 	</c:when>										
 	<c:otherwise>									<!-- se ele for cliente nao precisa ver ele mesmo -->
-						<th scope="col">Profissional</th>
+					<th scope="col">Profissional</th>
 	</c:otherwise>
 </c:choose>	
 
@@ -43,14 +46,35 @@
 				</tr>
 			</thead>
 			<tbody>
-			<c:forEach var="consulta" items="${requestScope.listaConsulta}">
+			<c:forEach var="consulta" items="${requestScope.listaConsultas}">
 <%
-				prf = prfDAO.get( Long.parseLong( request.getAttribute("consulta.cpf_profissional").toString() ) );
-				clt = cltDAO.get( Long.parseLong( request.getAttribute("consulta.cpf_cliente").toString() ) );
+				Consulta auxConsulta = (Consulta) pageContext.getAttribute("consulta");
+				prf = prfDAO.get( auxConsulta.getCpf_profissional() );
+				clt = cltDAO.get( auxConsulta.getCpf_cliente() );
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				String dataFormatada = df.format(auxConsulta.getData_consulta());
+				
+				
 %>
-				<tr class="${consulta.cancelada == TRUE ? 'table-danger' : ''}">
-					<th scope="row">${consulta.data_consulta}</th>
-					<td>${consulta.hora_consulta}</td>
+				<tr class="${consulta.cancelada == true ? 'table-danger' : ''}">
+					<th scope="row"><%=dataFormatada%></th>
+<%					
+					String strHoraConsulta = "";
+					int hora = auxConsulta.getHora_consulta().getHours();
+					int minuto = auxConsulta.getHora_consulta().getMinutes();
+					
+					if(  hora < 10) 
+						strHoraConsulta = "0" + hora; 
+					else 
+						strHoraConsulta = "" + hora;
+					strHoraConsulta += ":";
+					
+					if(  minuto < 10) 
+						strHoraConsulta += "0" + minuto; 
+					else 
+						strHoraConsulta += "" + minuto;
+%>
+					<td><%=strHoraConsulta%></td>
 <c:choose>
 	<c:when test="${usuarioLogado.tipoLogin == 2 }"><!-- se ele for prof nao precisa ver ele mesmo -->
 					<td><%=clt.getNome()%></td>
@@ -59,11 +83,16 @@
 					<td><%=prf.getNome()%></td>
 	</c:otherwise>
 </c:choose>	
-					
 					<td>
-						<a inline href="/<%=contextPath%>/consultas/edicao?num_consulta=${consulta.num_consulta}"><button type="button" class="btn btn-primary">Editar<i class="fa-solid fa-trash-can"></i></button></a>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<a href="/<%=contextPath%>/clientes/remocao?num_consulta=${consulta.num_consulta}"onclick="return confirm('Tem certeza de que deseja cancelar esta consulta?');"><button type="button" class="btn btn-danger">Cancelar <i class="fa-solid fa-trash-can"></i></button></a>
+<c:choose >
+<c:when test="${!consulta.cancelada}">
+						<a href="/<%=contextPath%>/consultas/cancelar?num_consulta=${consulta.num_consulta}"onclick="return confirm('Tem certeza de que deseja cancelar esta consulta?');"><button type="button" class="btn btn-danger">Cancelar<i class="fa-solid fa-trash-can"></i></button></a>
+</c:when>
+<c:otherwise>
+						Consulta cancelada
+</c:otherwise>
+		
+</c:choose>
 					</td>
 				</tr>
 			</c:forEach>
@@ -72,7 +101,5 @@
 		</table>
 	</div>
 </div>
-</body>
 
-</html>
 <%@include file="../footer.jsp"%>

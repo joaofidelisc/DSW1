@@ -10,9 +10,16 @@ public class Consulta {
     private Time hora_consulta;
     private Long cpf_profissional;
     private Long cpf_cliente;
-    private boolean cancelada; 
-    
-    
+    private boolean cancelada;
+	
+    public Consulta(Date data_consulta, Time hora_consulta, Long cpf_profissional, Long cpf_cliente, boolean cancelada) {
+		super();
+		this.data_consulta = data_consulta;
+		this.hora_consulta = hora_consulta;
+		this.cpf_profissional = cpf_profissional;
+		this.cpf_cliente = cpf_cliente;
+		this.cancelada = cancelada;
+	}
 	
 	public Consulta(Long num_consulta, Date data_consulta, Time hora_consulta, Long cpf_profissional, Long cpf_cliente, boolean cancelada) {
 		super();
@@ -23,6 +30,10 @@ public class Consulta {
 		this.cpf_cliente = cpf_cliente;
 		this.cancelada = cancelada;
 	}
+	public Consulta() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Long getNum_consulta() {
 		return num_consulta;
 	}

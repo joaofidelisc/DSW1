@@ -18,25 +18,17 @@
 	</div>
 
 		<div class="row">
-			<div class="col">
+			<div class="col-4">
 				<div class="mb-3">
 					<label for="email" class="form-label">Email</label>
 					<input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required value="${profissional.email}" ${flagReadonly}>
-					<div id="emailHelp" class="form-text text-danger">Erro! Email
-						já cadastrado</div>
+					<!-- <div id="emailHelp" class="form-text text-danger">Erro! Email já cadastrado</div>  -->
 				</div>
 			</div>
-			<div class="col">
+			<div class="col-4">
 				<div class="mb-3">
 					<label for="inputPassword1" class="form-label">Senha</label>
 					<input type="password" class="form-control" id="inputPassword1" name="senha" ${flagReadonly} value="${profissional.senha}">
-				</div>
-			</div>
-			<div class="col">
-				<div class="mb-3">
-					<label for="inputPassword2" class="form-label">Confirmação de senha</label>
-					<input type="password" class="form-control" id="inputPassword2" aria-describedby="passHelp2" ${flagReadonly} value="${profissional.senha}">
-					<div id="passHelp2" class="form-text text-danger">As senhas não coincidem</div>
 				</div>
 			</div>
 			<div class="col"></div>
@@ -57,8 +49,7 @@
 				<div class="mb-3">
 					<label for="cpf" class="form-label">CPF</label> 
 					<input type="text" class="form-control" id="cpf" name="cpf" aria-describedby="cpfHelp" required value="${profissional.cpf}" ${flagReadonly}>
-					<div id="cpfHelp" class="form-text text-danger">CPF inválido,
-						redigite</div>
+					<!-- <div id="cpfHelp" class="form-text text-danger">CPF inválido, redigite</div> -->
 				</div>
 			</div>
 			<div class="col-5">
@@ -71,7 +62,8 @@
 		<div class="row">
 			<div class="col-2">
 					<label for="areaConhecimento" class="form-label">Área de conhecimento</label> 
-					<select class="form-select" aria-label="Selecione" id="areaConhecimento" name="areaConhecimento">
+					<select class="form-select" aria-label="Selecione" required id="areaConhecimento" name="areaConhecimento" onclick='mudaEspecialidade(this.value)'>
+						<option  selected disabled >Selecione</option>
 						<option value="Medicina" ${profissional.areaConhecimento == "Medicina" ? 'selected':''}>Medicina</option>
 						<option value="Advocacia" ${profissional.areaConhecimento == "Advocacia" ? 'selected':''}>Advocacia</option>
 						<option value="Psicologia" ${profissional.areaConhecimento == "Psicologia" ? 'selected':''}>Psicologia</option>
@@ -79,11 +71,7 @@
 			</div>
 			<div class="col-3 mb-3">
 					<label for="especialidade" class="form-label">Especialidade</label>
-					<select class="form-select" aria-label="Selecione" id="especialidade" name="especialidade">
-						<option value="Cardiologista" ${profissional.especialidade == "Cardiologista" ? 'selected':''}>Cardiologista</option>
-						<option value="Advogado Criminal" ${profissional.especialidade == "Advogado Criminal" ? 'selected':''}>Advogado Criminal</option>
-						<option value="Psicologo Infantil" ${profissional.especialidade == "Psicologo Infantil" ? 'selected':''}>Psicólogo Infantil</option>
-					</select>
+					<input type="text" class="form-control" id="especialidade" name="especialidade" required value="${profissional.especialidade}" readonly>
 			</div>
 
 		</div>
@@ -104,3 +92,15 @@
 			</div>
 		</div>
 </div>
+<script>
+	function mudaEspecialidade(val){
+		if ( val == 'Medicina'){
+			document.getElementById('especialidade').value = 'Cardiologista';
+		}else if (val == 'Advocacia'){
+			document.getElementById('especialidade').value = 'Advogado Criminal';
+		}else if ( val == 'Psicologia'){
+			document.getElementById('especialidade').value = 'Psicologo Infantil';
+		}
+	}
+
+</script>

@@ -4,16 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.ufscar.dc.dsw.domain.Administrador;
-import br.ufscar.dc.dsw.domain.Profissional;
 
 public class AdministradorDAO extends Dao{
-    public Profissional get(Long email_parametro) {
-        Profissional clt = null;
+    public Administrador get(Long email_parametro) {
+        Administrador admin = null;
 
         String sql = "SELECT * from Profissional where email = ?";
 
@@ -28,7 +24,7 @@ public class AdministradorDAO extends Dao{
             	String senha = resultSet.getString("senha");
             	String nome = resultSet.getString("nome");
             
-                Administrador admin = new Administrador(email, senha, nome);
+                admin = new Administrador(email, senha, nome);
             }
 
             resultSet.close();
@@ -37,6 +33,6 @@ public class AdministradorDAO extends Dao{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return clt;
+        return admin;
     }
 }

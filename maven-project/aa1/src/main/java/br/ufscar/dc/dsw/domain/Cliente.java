@@ -12,6 +12,10 @@ public class Cliente {
     private String sexo; //F ou M
     private Date data_nascimento;
 
+    public Cliente() {
+    	
+    }
+    
     public Cliente(Long cpf) {
         this.setCpf(cpf);
     }

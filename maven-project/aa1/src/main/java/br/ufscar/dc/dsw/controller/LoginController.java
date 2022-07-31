@@ -10,12 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.ufscar.dc.dsw.controller.util.Erro;
+import br.ufscar.dc.dsw.util.Erro;
 import br.ufscar.dc.dsw.dao.LoginDAO;
-import br.ufscar.dc.dsw.domain.Administrador;
-import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Login;
-import br.ufscar.dc.dsw.domain.Profissional;
 
 @WebServlet(urlPatterns = {"/login.jsp", "/logout.jsp"})
 public class LoginController extends HttpServlet {
@@ -29,18 +26,18 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	Erro listaErros = new Erro();
-    	
+    	Erro erros = new Erro();
+
     	if(request.getParameter("btnLogin") != null) {//usuario esta fazendo login
     		String email = request.getParameter("email");
     		String senha = request.getParameter("senha");
     		if ( email == null || email.isEmpty()) { //não preencheu campo de login
-    			listaErros.add("Preencha o campo de email!");
+    			erros.add("O campo de email não foi preenchido!");
     		}
-    		if( senha == null || email.isEmpty() ) {//não preencheu campo de senha
-    			listaErros.add("Preenhca o campo de senha!");
+    		if( senha == null || senha.isEmpty() ) {//não preencheu campo de senha
+    			erros.add("O campo de senha não foi preenchido!");
     		}
-    		if( !listaErros.temErro() ) {//se todos os campos foram preenchidos corretamente
+    		if( !erros.temErro() ) {//se todos os campos foram preenchidos corretamente
     			LoginDAO daoLogin = new LoginDAO();
     	    	Login login = null;
 				try {
@@ -52,18 +49,24 @@ public class LoginController extends HttpServlet {
     	    		if( login.getSenha().equals(senha) ) {
             	    	request.getSession().setAttribute("usuarioLogado", login);//iniciando a sessao
             	    	response.sendRedirect(request.getContextPath() + "/home.jsp");
+        	    		return;
     	    		}else {
-        	    		listaErros.add("Senha incorreta, tente novamente!");
+        	    		erros.add("Senha incorreta, tente novamente!");
         	    	}
-    	    		return;
     	    	}else {
-    	    		listaErros.add("Usuário não encontrado!");
+    	    		erros.add("Usuário não encontrado!" );
     	    	}
     		}
     	}
+    	String str = "/erro.jsp";
+    	if( request.getServletPath().equals("/logout.jsp") ) {
+    		str = "/home.jsp";    		
+    	}else {
+    		request.setAttribute("mensagens", erros);
+    	}
     	request.getSession().invalidate();//logout ou login não funcionou
-    	request.setAttribute("mensages", listaErros);
-    	RequestDispatcher rd = request.getRequestDispatcher("/home.jsp");
+    	
+    	RequestDispatcher rd = request.getRequestDispatcher(str);
     	rd.forward(request, response);
     }
 }

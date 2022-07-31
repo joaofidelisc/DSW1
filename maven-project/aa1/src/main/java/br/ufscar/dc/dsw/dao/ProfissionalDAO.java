@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
+import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
+
 import br.ufscar.dc.dsw.domain.Profissional;
 
 public class ProfissionalDAO extends Dao {
@@ -35,11 +38,35 @@ public class ProfissionalDAO extends Dao {
         }
     }
 
-    public List<Profissional> getAll() {
+    public List<Profissional> getAll(String[] checkArea, String[] checkEspecialidade) {
 
         List<Profissional> listaProfissionais = new ArrayList<>();
-
-        String sql = "SELECT * from Profissional order by cpf"; //fazer ordenação por consulta depois
+        String sql = "SELECT * from Profissional"; //fazer ordenação por consulta depois
+        if(checkArea != null || checkEspecialidade != null){
+        	sql+=" WHERE";
+        	if(checkArea != null) {
+        		sql += " areaConhecimento in (";
+				for(String i: checkArea){
+						sql += "'"+ i + "'" +",";
+        		}
+				sql = sql.substring(0, sql.length() -1 );//tira a ultima virgula
+				sql+=")";
+				if(checkEspecialidade != null)
+					sql+=" or ";
+        	}
+        	if(checkEspecialidade != null) {
+        		sql += " especialidade in ( ";
+				for(String i: checkEspecialidade){
+						sql += "'" + i + "'" + ",";
+        		}
+				sql = sql.substring(0, sql.length() -1 );//tira a ultima virgula
+				sql+=")";
+        	}
+        }
+        sql+=" ORDER BY nome";
+        
+        
+        
 
         try {
             Connection conn = this.getConnection();

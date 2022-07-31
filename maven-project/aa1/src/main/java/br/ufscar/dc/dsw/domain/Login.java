@@ -11,7 +11,7 @@ public class Login {
 	public Login(String email, String senha, int tipoLogin) {
 		this.email = email;
 		this.senha = senha;
-		this.tipoLogin = tipoLogin;
+		this.tipoLogin = tipoLogin;//1 - admin, 2 - profissional, 3 - cliente
 	}
 	
 	public String getEmail() {
@@ -33,5 +33,4 @@ public class Login {
 	public void setTipoLogin(int tipoLogin) {
 		this.tipoLogin = tipoLogin;
 	}
-
 }

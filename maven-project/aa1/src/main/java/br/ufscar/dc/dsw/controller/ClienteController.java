@@ -2,8 +2,11 @@ package br.ufscar.dc.dsw.controller;
 
 import br.ufscar.dc.dsw.dao.ClienteDAO;
 import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.domain.Login;
+import br.ufscar.dc.dsw.util.Erro;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ClienteController extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	
+	Erro erros;
 	private ClienteDAO dao;
 	
 	@Override
@@ -29,52 +32,66 @@ public class ClienteController extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException{
+			throws ServletException, IOException{
 		doGet(request, response);
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException{
-		
-		String action = request.getPathInfo();
-		
-		if(action == null) {
-			action = "";
-		}
-		
-		try {
-			switch (action) {   
-				case "/cadastro":
-					paginaCadastroCliente(request, response);
-					break;
-				case "/insercao":
-					insere(request, response);
-				case "/remocao":
-					remove(request, response);
-					break;
-				case "/edicao":
-					paginaEdicaoCliente(request, response);
-					break;
-				case "/atualizacao":
-					atualize(request, response);
-					break;
-				default:
-					paginaListaClientes(request, response);
-					break;
+			throws ServletException, IOException{
+		erros = new Erro();
+		Login lgn = (Login) request.getSession().getAttribute("usuarioLogado"); 
+		if (lgn != null && lgn.getTipoLogin() == 1) {//admin logado
+			String action = request.getPathInfo();
+			
+			if(action == null) {
+				action = "";
 			}
 			
-		} catch (RuntimeException | IOException | ServletException e) {
-			throw new ServletException(e);
-		} catch (ParseException e) {
-			e.printStackTrace();
+			try {
+				switch (action) {   
+					case "/cadastro":
+						paginaCadastroCliente(request, response);
+						break;
+					case "/insercao":
+						insere(request, response);
+						break;
+					case "/remocao":
+						remove(request, response);
+						break;
+					case "/edicao":
+						paginaEdicaoCliente(request, response);
+						break;
+					case "/atualizacao":
+						atualize(request, response);
+						break;
+					default:
+						paginaListaClientes(request, response);
+						break;
+				}
+				
+			} catch (RuntimeException | IOException | ServletException e) {
+				throw new ServletException(e);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}else {
+			erros.add("Acesso negado! Você não é um administrador.");
+		}
+		if(erros.temErro()) {
+			request.setAttribute("mensagens", erros);
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/erro.jsp");
+			dispatcher.forward(request, response);
 		}
 	}
 	
 	private void paginaCadastroCliente(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
 		request.setAttribute("flagReadonly", "");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/cliente/formulario.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/cliente/formulario.jsp");//cliente é a pasta e formulario.jsp está dentro dela. Essa pasta não é acessível pela url
 		dispatcher.forward(request, response);		
 	}
 	
@@ -87,19 +104,34 @@ public class ClienteController extends HttpServlet {
 	}
 	
 	private void insere(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException, ParseException{
+			throws ServletException, IOException, ParseException, SQLException{
+		
 		request.setCharacterEncoding("UTF-8");
 		
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
-		Long cpf;
-		cpf = Long.parseLong(request.getParameter("cpf"));
+		Long cpf = Long.parseLong(request.getParameter("cpf"));
 		String nome = request.getParameter("nome");
 		Long telefone;
 		telefone = Long.parseLong(request.getParameter("telefone"));
 		String sexo = request.getParameter("sexo"); 
-		String str = request.getParameter("data_nascimento");
 		Date data_nascimento = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_nascimento"));
+		
+		Long cpf_buscado_com_email = dao.getCpfUsuarioPorEmail(email);
+		
+		if( cpf_buscado_com_email != null) {//se encontrou algo, erro!
+			//erro: email já cadastrado
+			erros.add("Email já cadastrado! Tente novamente com outro endereço.");
+		}
+		
+		boolean cpfJaCadastrado = dao.cpfJaCadastrado(cpf);
+		if( cpfJaCadastrado ) {
+			erros.add("CPF já cadastrado! Tente novamente com outro.");
+		}
+		
+		if( erros.temErro() ) {
+			return;
+		}
 		
 		Cliente cliente = new Cliente(email,senha,cpf,nome, telefone, sexo,data_nascimento);
 		
@@ -128,7 +160,6 @@ public class ClienteController extends HttpServlet {
 		Long telefone;
 		telefone = Long.parseLong(request.getParameter("telefone"));
 		String sexo = request.getParameter("sexo"); 
-		String str = request.getParameter("data_nascimento");
 		Date data_nascimento = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data_nascimento"));
 		
 		Cliente cliente = new Cliente(email,senha,cpf,nome, telefone, sexo,data_nascimento);

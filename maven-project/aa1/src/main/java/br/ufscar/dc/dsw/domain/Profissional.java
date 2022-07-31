@@ -10,6 +10,10 @@ public class Profissional {
 	private String especialidade;
 	private String local_pdf;
 
+	public Profissional() {
+		
+	}
+	
     public Profissional(Long cpf) {
         this.setCpf(cpf);
     }

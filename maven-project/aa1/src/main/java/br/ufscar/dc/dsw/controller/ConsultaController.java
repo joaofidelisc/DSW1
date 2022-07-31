@@ -1,11 +1,17 @@
 package br.ufscar.dc.dsw.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,13 +22,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.ufscar.dc.dsw.dao.ClienteDAO;
 import br.ufscar.dc.dsw.dao.ConsultaDAO;
+import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Consulta;
+import br.ufscar.dc.dsw.domain.Login;
+import br.ufscar.dc.dsw.util.Erro;
 
 @WebServlet(urlPatterns = {"/consultas/*"})
 public class ConsultaController extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	private ConsultaDAO dao;
+	private Erro erros;
 	
 	@Override
 	public void init() {
@@ -38,7 +48,8 @@ public class ConsultaController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException{
-String action = request.getPathInfo();
+		erros = new Erro();
+		String action = request.getPathInfo();
 		
 		if(action == null) {
 			action = "";
@@ -47,94 +58,116 @@ String action = request.getPathInfo();
 		try {
 			switch (action) {   
 				case "/cadastro":
-					//paginaCadastroConsulta(request, response);
+					paginaCadastroConsulta(request, response);
 					break;
 				case "/insercao":
 					insere(request, response);
-				case "/cancelar":
-					//cancelar(request, response);
 					break;
-				case "/atualizacao":
-					atualize(request, response);
+				case "/cancelar":
+					cancelar(request, response);
 					break;
 				default:
 					paginaListaConsultas(request, response);
 					break;
 			}
 			
-		} catch (RuntimeException | IOException /*| ServletException*/ e) {
+		} catch (RuntimeException | IOException 	| ParseException | SQLException e) {
 			throw new ServletException(e);
 		}
-		
+		if(erros.temErro()) {
+			request.setAttribute("mensagens", erros);
+			erros.limpa();
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/erro.jsp");
+			dispatcher.forward(request, response);
+			
+		}
 	}
 
 	public void paginaCadastroConsulta(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-			//pagina q redireciona pra consulta
+		Login lgn = (Login) request.getSession().getAttribute("usuarioLogado"); 
+		if( lgn != null && lgn.getTipoLogin() == 3 ) {//apenas clientes podem agendar consultas
+			request.setAttribute("flagReadonly", "");
+			String str = request.getParameter("cpf_profissional");
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/consulta/formulario.jsp");
+			dispatcher.forward(request, response);
+		}else {
+				Erro erros = new Erro();
+				erros.add("Acesso negado! Apenas clientes podem agendar consultas");
+				request.setAttribute("mensagens", erros);
+				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/erro.jsp");
+				dispatcher.forward(request, response);
+		}
+		
+		
 	}
 	
 	public void paginaListaConsultas(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		List<Consulta> listaConsultas = dao.getAll();
-		request.setAttribute("listaConsultas", listaConsultas);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("consulta/lista.jsp");
-		dispatcher.forward(request, response);		
+		Login lgn = (Login) request.getSession().getAttribute("usuarioLogado");
+		if( lgn != null && (lgn.getTipoLogin() == 2 || lgn.getTipoLogin() == 3) ) {//apenas clientes  e profissionais podem listar consultas
+			
+			List<Consulta> listaConsultas = dao.getAllByEmail( lgn.getEmail(), lgn.getTipoLogin() );
+			request.setAttribute("listaConsultas", listaConsultas);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/consulta/lista.jsp");
+			dispatcher.forward(request, response);
+		}else {
+			Erro erros = new Erro();
+			erros.add("Acesso negado! Apenas clientes e profissionais podem listar consultas");
+		}
+			
+		
 	}
 
-	/**
-	 * @param request
-	 * @param response
-	 * @throws ServletException
-	 * @throws IOException
-	 */
-
 	public void insere(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException{
+			throws ServletException, IOException, ParseException, SQLException{
 		request.setCharacterEncoding("UTF-8");
-        
-		Long num_consulta = Long.parseLong(request.getParameter("num_consulta"));
-		Date data_consulta = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_consulta"));
-        Time hora_consulta = request.getParameter("hora_consulta");								
+		        
+		Date data_consulta = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data_consulta"));
+        Time hora_consulta = java.sql.Time.valueOf( request.getParameter("hora_consulta") );
 		Long cpf_profissional = Long.parseLong(request.getParameter("cpf_profissional"));
 		Long cpf_cliente = Long.parseLong(request.getParameter("cpf_cliente"));
-		boolean cancelada = false;							
-        
-        Consulta consulta = new Consulta(num_consulta, data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
+		boolean cancelada = false;
+		
+		java.sql.Date data_consulta_SQLDATE= new java.sql.Date(data_consulta.getTime());
+		if( !dao.verificaSeClienteDisponivel(data_consulta_SQLDATE, hora_consulta, cpf_cliente) ) {
+			erros.add("Você já tem uma consulta agendada nesta data! Tente agendar em outra data");
+		}
+		if( !dao.verificaSeProfissionalDisponivel(data_consulta_SQLDATE, hora_consulta, cpf_profissional) ) {
+			erros.add("O profissional escolhido não está disponível nesta data! Agende com outro ou tente mudar a data");
+		}
+		if( erros.temErro()) {
+			return;
+		}
+		
+		
+        Consulta consulta = new Consulta(data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
         dao.insert(consulta);
         response.sendRedirect("consulta/lista.jsp");
 				
 	}
 
 	public void cancelar(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException{
+			throws ServletException, IOException, ParseException{
 				//verificar se ainda tem 3 dias ou mais da consulta, se sim, pode cancelar
-	}
-
-	public void atualize(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException{
-		request.setCharacterEncoding("UTF-8");
-        
-		Long num_consulta = Long.parseLong(request.getParameter("num_consulta"));
-		Date data_consulta = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_consulta"));
-		Time hora_consulta = request.getParameter("hora_consulta");								
-		Long cpf_profissional = Long.parseLong(request.getParameter("cpf_profissional"));
-		Long cpf_cliente = Long.parseLong(request.getParameter("cpf_cliente"));
-
-		boolean cancelada = false;
-			if(request.getParameter("cancelada").equals("true")){
-				cancelada = true;
-			}else{
-				cancelada=false;
-			}					
-				
-		Consulta consulta = new Consulta(num_consulta, data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
+		Consulta consulta = dao.get( Long.parseLong(request.getParameter("num_consulta") ) );
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Locale loc = new Locale("BR");
+		
+		Date data_consulta = consulta.getData_consulta(); 
+		
+		Calendar calendar_atual = GregorianCalendar.getInstance(loc);
+		
+		float diffEmMilisegundos = Math.abs(data_consulta.getTime() - calendar_atual.getTimeInMillis());
+		float diaEmMili = 24*60*60*1000;
+		float diffEmDias = diffEmMilisegundos/diaEmMili;
+		
+		
+		
+		consulta.setCancelada(true);
 		dao.update(consulta);
-		response.sendRedirect("consulta/lista.jsp");
+		response.sendRedirect("lista");
 	}
-
-
-
-
-	
-
 }
