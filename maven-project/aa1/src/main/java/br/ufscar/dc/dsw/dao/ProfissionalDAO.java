@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
-import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
+//import org.apache.jasper.tagplugins.jstl.core.ForEach;
+//import org.eclipse.jdt.internal.compiler.ast.ForeachStatement;
 
 import br.ufscar.dc.dsw.domain.Profissional;
 
@@ -63,7 +63,7 @@ public class ProfissionalDAO extends Dao {
 				sql+=")";
         	}
         }
-        sql+=" ORDER BY nome";
+        sql+=" ORDER BY cpf";
         
         
         

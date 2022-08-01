@@ -10,9 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufscar.dc.dsw.domain.Cliente;
 import br.ufscar.dc.dsw.domain.Consulta;
-import br.ufscar.dc.dsw.domain.Profissional;
 
 public class ConsultaDAO extends Dao {
 

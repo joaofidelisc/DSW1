@@ -115,7 +115,7 @@ public class ClienteController extends HttpServlet {
 		Long telefone;
 		telefone = Long.parseLong(request.getParameter("telefone"));
 		String sexo = request.getParameter("sexo"); 
-		Date data_nascimento = new SimpleDateFormat("YYYY-MM-dd").parse(request.getParameter("data_nascimento"));
+		Date data_nascimento = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data_nascimento"));
 		
 		Long cpf_buscado_com_email = dao.getCpfUsuarioPorEmail(email);
 		

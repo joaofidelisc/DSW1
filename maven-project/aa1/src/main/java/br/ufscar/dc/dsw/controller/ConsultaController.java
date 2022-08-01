@@ -37,6 +37,7 @@ public class ConsultaController extends HttpServlet{
 	@Override
 	public void init() {
 		dao = new ConsultaDAO();
+		erros = new Erro();
 	}
 	
 	@Override
@@ -48,7 +49,7 @@ public class ConsultaController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException{
-		erros = new Erro();
+
 		String action = request.getPathInfo();
 		
 		if(action == null) {
@@ -76,10 +77,9 @@ public class ConsultaController extends HttpServlet{
 		}
 		if(erros.temErro()) {
 			request.setAttribute("mensagens", erros);
-			erros.limpa();
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/erro.jsp");
 			dispatcher.forward(request, response);
-			
+			erros.limpa();
 		}
 	}
 
@@ -93,12 +93,7 @@ public class ConsultaController extends HttpServlet{
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/consulta/formulario.jsp");
 			dispatcher.forward(request, response);
 		}else {
-				Erro erros = new Erro();
 				erros.add("Acesso negado! Apenas clientes podem agendar consultas");
-				request.setAttribute("mensagens", erros);
-				
-				RequestDispatcher dispatcher = request.getRequestDispatcher("/erro.jsp");
-				dispatcher.forward(request, response);
 		}
 		
 		
@@ -114,7 +109,6 @@ public class ConsultaController extends HttpServlet{
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/consulta/lista.jsp");
 			dispatcher.forward(request, response);
 		}else {
-			Erro erros = new Erro();
 			erros.add("Acesso negado! Apenas clientes e profissionais podem listar consultas");
 		}
 			
@@ -124,50 +118,64 @@ public class ConsultaController extends HttpServlet{
 	public void insere(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, ParseException, SQLException{
 		request.setCharacterEncoding("UTF-8");
-		        
-		Date data_consulta = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data_consulta"));
-        Time hora_consulta = java.sql.Time.valueOf( request.getParameter("hora_consulta") );
-		Long cpf_profissional = Long.parseLong(request.getParameter("cpf_profissional"));
-		Long cpf_cliente = Long.parseLong(request.getParameter("cpf_cliente"));
-		boolean cancelada = false;
-		
-		java.sql.Date data_consulta_SQLDATE= new java.sql.Date(data_consulta.getTime());
-		if( !dao.verificaSeClienteDisponivel(data_consulta_SQLDATE, hora_consulta, cpf_cliente) ) {
-			erros.add("Você já tem uma consulta agendada nesta data! Tente agendar em outra data");
+		Login lgn = (Login) request.getSession().getAttribute("usuarioLogado"); 
+		if( lgn != null && lgn.getTipoLogin() == 3 ) {
+			Date data_consulta = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("data_consulta"));
+	        Time hora_consulta = java.sql.Time.valueOf( request.getParameter("hora_consulta") );
+			Long cpf_profissional = Long.parseLong(request.getParameter("cpf_profissional"));
+			Long cpf_cliente = Long.parseLong(request.getParameter("cpf_cliente"));
+			boolean cancelada = false;
+			
+			java.sql.Date data_consulta_SQLDATE= new java.sql.Date(data_consulta.getTime());
+			if( !dao.verificaSeClienteDisponivel(data_consulta_SQLDATE, hora_consulta, cpf_cliente) ) {
+				erros.add("Você já tem uma consulta agendada nesta data! Tente agendar em outra data");
+			}
+			if( !dao.verificaSeProfissionalDisponivel(data_consulta_SQLDATE, hora_consulta, cpf_profissional) ) {
+				erros.add("O profissional escolhido não está disponível nesta data! Agende com outro ou tente mudar a data");
+			}
+				if( erros.temErro()) {
+				return;
+			}
+			
+			
+	        Consulta consulta = new Consulta(data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
+	        dao.insert(consulta);
+	        response.sendRedirect("consulta/lista.jsp");
+		}else {
+			erros.add("Acesso negado! Apenas clientes podem agendar consultas");
 		}
-		if( !dao.verificaSeProfissionalDisponivel(data_consulta_SQLDATE, hora_consulta, cpf_profissional) ) {
-			erros.add("O profissional escolhido não está disponível nesta data! Agende com outro ou tente mudar a data");
-		}
-		if( erros.temErro()) {
-			return;
-		}
-		
-		
-        Consulta consulta = new Consulta(data_consulta, hora_consulta, cpf_profissional, cpf_cliente,cancelada);
-        dao.insert(consulta);
-        response.sendRedirect("consulta/lista.jsp");
-				
 	}
 
 	public void cancelar(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, ParseException{
-				//verificar se ainda tem 3 dias ou mais da consulta, se sim, pode cancelar
-		Consulta consulta = dao.get( Long.parseLong(request.getParameter("num_consulta") ) );
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Locale loc = new Locale("BR");
-		
-		Date data_consulta = consulta.getData_consulta(); 
-		
-		Calendar calendar_atual = GregorianCalendar.getInstance(loc);
-		
-		float diffEmMilisegundos = Math.abs(data_consulta.getTime() - calendar_atual.getTimeInMillis());
-		float diaEmMili = 24*60*60*1000;
-		float diffEmDias = diffEmMilisegundos/diaEmMili;
-		
-		
-		
-		consulta.setCancelada(true);
-		dao.update(consulta);
-		response.sendRedirect("lista");
+		Login lgn = (Login) request.getSession().getAttribute("usuarioLogado"); 
+		if( lgn != null && (lgn.getTipoLogin() == 2 || lgn.getTipoLogin() == 3 ) ) {
+			Consulta consulta = dao.get( Long.parseLong(request.getParameter("num_consulta") ) );
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Locale loc = new Locale("BR");
+			
+			Date data_consulta = consulta.getData_consulta();
+			int hora_consulta = consulta.getHora_consulta().getHours();
+			float data_consulta_mili = data_consulta.getTime() + hora_consulta*60*60*1000;
+			
+			Calendar calendar_atual = GregorianCalendar.getInstance(loc);
+			
+			double diffEmMilisegundos = data_consulta_mili - calendar_atual.getTimeInMillis();
+			double diaEmMili = 24*60*60*1000;
+			double diffEmDias = diffEmMilisegundos/diaEmMili;
+			double comp = 3.00000;
+			double diff = diffEmDias- comp;
+			if( (diff ) < 0 ) {
+				erros.add("Consultas apenas podem ser canceladas com 3 dias de antecedência!");
+				return;
+			}
+			
+			consulta.setCancelada(true);
+			dao.update(consulta);
+			response.sendRedirect("lista");
+		}else {
+			erros.add("Acesso negado! Apenas clientes e profissionais podem cancelar consultas");
+		}
+			
 	}
 }
