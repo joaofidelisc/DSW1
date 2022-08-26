@@ -58,31 +58,31 @@ public class Aa2Application {
 	// 		professional2.setFilename("teste");
 	// 		usuarioDAO.save(professional2);
 			
-	// 		Client client1 = new Client();
-	// 		client1.setUsername("joao@mail.com");
-	// 		client1.setName("João Vitor Fidelis Cardozo");
-	// 		client1.setPassword(encoder.encode("123"));
-	// 		client1.setRole("CLIENT");
-	// 		client1.setCpf("41438691874");
-	// 		client1.setEmail("joao@mail.com");
-	// 		client1.setTelephone("16999922222");
-	// 		client1.setGender("M");
-	// 		client1.setBirthDate("1998-06-10");
-	// 		client1.setEnabled(true);
-	// 		usuarioDAO.save(client1);
+			Cliente client1 = new Cliente();
+			client1.setUsername("joao@mail.com");
+			client1.setName("João Vitor Fidelis Cardozo");
+			client1.setPassword(encoder.encode("123"));
+			client1.setRole("CLIENT");
+			client1.setCpf("41438691874");
+			client1.setEmail("joao@mail.com");
+			client1.setTelefone("16999922222");
+			client1.setGenero("M");
+			client1.setdataNascimento("1998-06-10");
+			client1.setEnabled(true);
+			usuarioDAO.save(client1);
 			
-	// 		Client client2 = new Client();
-	// 		client2.setUsername("matteus@mail.com");
-	// 		client2.setName("Matteus Souza");
-	// 		client2.setPassword(encoder.encode("123"));
-	// 		client2.setRole("CLIENT");
-	// 		client2.setCpf("11111111111111");
-	// 		client2.setEmail("matteus@mail.com");
-	// 		client2.setTelephone("99999999999");
-	// 		client2.setGender("M");
-	// 		client2.setBirthDate("1999-05-04");
-	// 		client2.setEnabled(true);
-	// 		usuarioDAO.save(client2);
+			Cliente client2 = new Cliente();
+			client2.setUsername("matteus@mail.com");
+			client2.setName("Matteus Souza");
+			client2.setPassword(encoder.encode("123"));
+			client2.setRole("CLIENT");
+			client2.setCpf("11111111111111");
+			client2.setEmail("matteus@mail.com");
+			client2.setTelefone("99999999999");
+			client2.setGenero("M");
+			client2.setdataNascimento("1999-05-04");
+			client2.setEnabled(true);
+			usuarioDAO.save(client2);
 		};
 	}
 

@@ -19,7 +19,7 @@
 			<nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top"
 			aria-label="Sixth navbar example">
 			<div class="container-fluid"> 
-				<a class="navbar-brand" href="#">Clínica</a>
+				<a class="navbar-brand" th:href="@{/}">Clínica</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
 					data-bs-target="#navbarsExample06" aria-controls="navbarsExample06"
 					aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@
 							<a class="nav-link active" aria-current="page" th:href="@{/consultas/listar}">Consultas</a>
 						</li>
 						<!--nao precisa de login. O admin não tem acesso a esse link porque já tem acesso na linha 54-->
-						<li class="nav-item" sec:authorize="hasRole('cliente') || hasRole('profissional') || !isAuthenticated()">
+						<li class="nav-item" sec:authorize="hasRole('CLIENTE') || hasRole('profissional') || !isAuthenticated()">
 							<a class="nav-link active" aria-current="page" th:href="@{/profissionais/listar}">Profissionais</a>
 						</li>
 
@@ -58,7 +58,7 @@
 						</li>
 
 						
-						<li class="nav-item dropdown" sec:authorize="hasRole('admin')">
+						<li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
 							
 						<a
 						class="nav-link dropdown-toggle" href="#" role="button"

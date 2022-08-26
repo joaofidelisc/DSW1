@@ -12,7 +12,7 @@ import javax.persistence.Table;
 //import br.ufscar.dsw.profissionais.domain.AbstractEntity;
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "User")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends AbstractEntity<Long> {
 
