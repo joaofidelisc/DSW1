@@ -19,7 +19,7 @@ public class Aa2Application {
 
 	@Bean
 	// public CommandLineRunner demo(UserDAO usuarioDAO, ProfessionalDAO locadoraDAO, BCryptPasswordEncoder encoder) {
-	public CommandLineRunner demo(UserDAO usuarioDAO, BCryptPasswordEncoder encoder) {
+	public CommandLineRunner demo(IUserDAO usuarioDAO, BCryptPasswordEncoder encoder) {
 		return (args) -> {
 
 			User user = new User();

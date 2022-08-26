@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class Administrador extends User {
 
     @NotBlank
-	@Size(min = 14, max = 14)
+	@Size(min = 11, max = 14)
 	@Column(nullable = false, unique = true, length = 60)
 	private String cpf;
 
