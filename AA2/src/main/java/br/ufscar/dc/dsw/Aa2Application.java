@@ -78,7 +78,6 @@ public class Aa2Application {
 			client1.setPassword(encoder.encode("123"));
 			client1.setRole("CLIENT");
 			client1.setCpf("41438691874");
-			client1.setEmail("joao@mail.com");
 			client1.setTelefone("16999922222");
 			client1.setGenero("M");
 			client1.setdataNascimento("1998-06-10");
@@ -91,7 +90,6 @@ public class Aa2Application {
 			client2.setPassword(encoder.encode("123"));
 			client2.setRole("CLIENT");
 			client2.setCpf("11111111111111");
-			client2.setEmail("matteus@mail.com");
 			client2.setTelefone("99999999999");
 			client2.setGenero("M");
 			client2.setdataNascimento("1999-05-04");
