@@ -1,0 +1,69 @@
+<!-- 		
+		
+    <div id="content">
+    <h1 th:text="#{home}"></h1>
+    
+    <div class="hello" sec:authorize="isAuthenticated()">
+        <h2>
+            <span th:text="#{index.hello}"></span>
+            <span th:inline="text">[[${#httpServletRequest.remoteUser}]]!</span>
+        </h2>
+    </div>
+
+    <div class="container">
+
+        <div class="btn" sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/professionals/listar}">
+                <span th:text="#{professionals_text}"></span>
+            </a>
+        </div>
+        
+        <div class="btn" sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{/clientes/listar}">
+                <span class="" th:text="#{clients.text}"></span>
+            </a>
+        </div>
+
+        <div class="menu-client" sec:authorize="hasAuthority('CLIENT')">
+            <a th:href="@{/professionals/listar}">
+                <span class="" th:text="#{professionals_text}"></span>
+            </a>
+            <a th:href="@{/consultas/listarClient}">
+                <span class="" th:text="#{appointment_text}"></span>
+            </a>
+        </div>
+
+        <div class="btn" sec:authorize="hasAuthority('PROF')">
+            <a th:href="@{/consultas/listarProf}">
+                <span class="" th:text="#{appointment_text}"></span>
+            </a>
+        </div>
+
+        <div class="menu-unauthenticated" sec:authorize="!isAuthenticated()">
+            <a th:href="@{/professionals/listar}">
+                <span class="" th:text="#{professionals_text}"></span>
+            </a>
+            <a th:href="@{/login}">
+                <span class="" th:text="#{logon_text}"></span>
+            </a>
+            <a th:href="@{/professionals/cadastrar}">
+                <span class="" th:text="#{cadastro_prof_text}"></span>
+            </a>
+            <a th:href="@{/clientes/cadastrar}">
+                <span class="" th:text="#{client.register}"></span>
+            </a>
+        </div>
+
+        <div sec:authorize="isAuthenticated()">
+            <form th:action="@{/logout}" method="post">
+                <div >
+                    <div >
+                        <input class="btn" type="submit" name="login-submit" id="login-submit"
+                            value="Logout">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div> -->
