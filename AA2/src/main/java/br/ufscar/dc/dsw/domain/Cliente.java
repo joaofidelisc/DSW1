@@ -16,15 +16,6 @@ import javax.validation.constraints.Size;
 public class Cliente extends User {
 
     @NotBlank
-	@Size(min = 11, max = 14)
-	@Column(nullable = false, unique = true, length = 60)
-	private String cpf;
-
-	@NotBlank
-	@Column(nullable = false, unique = true, length = 50)
-    private String email;
-
-    @NotBlank
 	@Size(min = 11, max = 15)
 	@Column(nullable = false, unique = false, length = 60)
 	private String telefone;
@@ -41,22 +32,6 @@ public class Cliente extends User {
 
 	@OneToMany(mappedBy = "cliente", cascade = CascadeType.REMOVE, orphanRemoval = false)
 	private List<Consulta> consultas;
-	
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	
     public String getTelefone() {
 		return telefone;
