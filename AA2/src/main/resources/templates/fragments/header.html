@@ -36,7 +36,8 @@
 						
 						
 						<!--APENAS PARA PROFISSIONAIS E CLIENTES-->
-						<li class="nav-item" sec:authorize="hasRole('profissional') || hasRole('cliente')">
+						<!-- <li class="nav-item" sec:authorize="hasRole('profissional') || hasRole('cliente')"> -->
+						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" th:href="@{/consultas/listar}">Consultas</a>
 						</li>
 						<!--nao precisa de login. O admin não tem acesso a esse link porque já tem acesso na linha 54-->
@@ -45,7 +46,8 @@
 						</li>
 
 						<!--APENAS PARA ADMIN-->
-						<li class="nav-item dropdown" sec:authorize="hasRole('admin')">
+						<!-- <li class="nav-item dropdown" sec:authorize="hasRole('admin')"> -->
+						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
 								Registros 
 							</a>
