@@ -17,6 +17,55 @@
 		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
+		<!--D1-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--D2-->
+	
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
+
+
+		<!--D3-->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		<!-- <version>${spring.version}</version> -->
+		</dependency>
+
+
+		<!--D4-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		<!-- <version>${spring.version}</version> -->
+		</dependency>
+
+		<!--D5-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<!-- <version>${spring.version}</version> -->
+		</dependency>
+
+		<!--D6-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<!-- <version>${spring.version}</version> -->
+		</dependency>
+
+
+		<!--Another dependencies-->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
