@@ -37,33 +37,43 @@
 						
 						
 						<!--APENAS PARA PROFISSIONAIS E CLIENTES-->
-						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" href="#">Consultas</a></li>
-							<!--APENAS PARA CLIENTE-->
-							<li class="nav-item"><a class="nav-link active"
-								aria-current="page" href="#">Profissionais</a>
+						<li class="nav-item" sec:authorize="hasRole(ROLE_PROFISSIONAL, ROLE_CLIENTE)">
+							<a class="nav-link active" aria-current="page" th:href="@{/consultas/listar}">Consultas</a>
+						</li>
+						<!--APENAS PARA CLIENTE-->
+						<li class="nav-item" sec:authorize="hasRole(ROLE_CLIENTE)">
+							<a class="nav-link active" aria-current="page" th:href="@{/profissionais/listar}">Profissionais</a>
 						</li>
 
 						<!--APENAS PARA ADMIN-->
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"> Registros </a>
+						<li class="nav-item dropdown" sec:authorize="hasRole(ROLE_ADMIN)">
+							<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"> 
+								Registros 
+							</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Cliente</a></li>
-								<li><a class="dropdown-item" href="#">Profissional</a></li>
+								<li><a class="dropdown-item" th:href="@{/clientes/listar}">Cliente</a></li>
+								<li><a class="dropdown-item" th:href="@{/profissionais/listar}">Profissional</a></li>
 							</ul>
 						</li>
 
 						
-						<li class="nav-item dropdown">
+						<li class="nav-item dropdown" sec:authorize="hasRole(ROLE_ADMIN)">
 							
 						<a
 						class="nav-link dropdown-toggle" href="#" role="button"
 						data-bs-toggle="dropdown" aria-expanded="false"> Cadastro 
 						</a>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Cliente</a></li>
-								<li><a class="dropdown-item" href="#">Profissional</a></li>
+								<li>
+									<a class="dropdown-item" th:href="@{/clientes/cadastrar}">
+										Cliente
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item" th:href="@{/profissionais/cadastrar}">
+										Profissional
+									</a>
+								</li>
 							</ul>
 						</li>
 
