@@ -8,17 +8,24 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 //import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 //import br.ufscar.dsw.profissionais.domain.AbstractEntity;
 
 @Entity
-@Table(name = "Usuario")
+@Table(name = "User")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends AbstractEntity<Long> {
+    
+    @NotBlank
+	@Size(min = 11, max = 14)
+	@Column(nullable = false, unique = true, length = 60)
+	private String cpf;
 
-	@Column(nullable = false, length = 45)
+    @Column(nullable = false, length = 45)
     private String username;
- 
+
     @Column(nullable = false, length = 45)
     private String name;
 
@@ -30,7 +37,15 @@ public class User extends AbstractEntity<Long> {
 
 	@Column(nullable = false)
     private boolean enabled;
-	
+
+    public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String Cpf) {
+		this.cpf = Cpf;
+	}
+
 	public String getUsername() {
 		return username;
 	}

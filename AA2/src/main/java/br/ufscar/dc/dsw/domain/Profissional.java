@@ -8,29 +8,15 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import javax.persistence.Lob;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name="Profissional")
-public class Profissional extends User {
-    
-	@NotBlank
-	@Size(min = 11, max = 14)
-	@Column(nullable = false, unique = true, length = 60)
-	private String cpf;
-
-	@NotBlank
-	@Column(nullable = false, unique = true, length = 50)
-    private String email;
-	
+public class Profissional extends User {	
 	@NotBlank
 	@Column(nullable = false, length = 100)
 	private String nomeArquivo;
-
-	@Lob
-	private byte[] qualificacoes;
 
     @NotBlank
 	@Column(nullable = false, length = 50)
@@ -42,30 +28,6 @@ public class Profissional extends User {
 
 	@OneToMany(mappedBy = "profissional", cascade = CascadeType.REMOVE, orphanRemoval = false)
 	private List<Consulta> consultas;
-	
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String Cpf) {
-		this.cpf = Cpf;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public byte[] getQualificacoes() {
-		return qualificacoes;
-	}
-
-	public void setQualificacoes(byte[] qualificacoes) {
-		this.qualificacoes = qualificacoes;
-	}
 
 	public String getAreaDeConhecimento() {
 		return areaDeConhecimento;
