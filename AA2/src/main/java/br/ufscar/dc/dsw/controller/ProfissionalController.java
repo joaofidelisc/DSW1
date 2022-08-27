@@ -32,24 +32,25 @@ public class ProfissionalController {
         return "profissional/cadastro";
     }
 
-    // @GetMapping("/listar")
-    // public String listar(ModelMap model){
-    //     model.addAttribute("profissionais", service.buscarTodos() );
-    //     return "cliente/lista"; 
-    // }
+    @GetMapping("/listar")
+    public String listar(ModelMap model){
+        model.addAttribute("profissionais", service.buscarTodos() );
+        return "cliente/lista"; 
+    }
 
-    // @PostMapping("/salvar")
-    // public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
-    //     if( result.hasErrors() ){
-    //         System.out.println(result.toString());
-    //         return "cliente/cadastro";
-    //     }
-    //     cliente.setEnabled(true);
-    //     cliente.setRole("ROLE_CLIENTE");
-    //     service.salvar(cliente);
-    //     attr.addFlashAttribute("success", "cliente.create.success");
-    //     return "redirect:/clientes/listar";
-    // }
+    @PostMapping("/salvar")
+    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr) {
+        if( result.hasErrors() ){
+            System.out.println(result.toString());
+            return "profissional/cadastro";
+        }
+        
+        profissional.setEnabled(true);
+        profissional.setRole("ROLE_PROF");
+        service.salvar(profissional);
+        attr.addFlashAttribute("success", "profissional.create.success");
+        return "redirect:/profissional/listar";
+    }
 
     // @GetMapping("/editar/{id}")
 	// public String preEditar(@PathVariable("id") Long id, ModelMap model) {

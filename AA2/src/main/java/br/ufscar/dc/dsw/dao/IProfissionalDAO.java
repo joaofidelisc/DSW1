@@ -3,11 +3,13 @@ import java.util.List;
 import br.ufscar.dc.dsw.domain.Profissional;
 import org.springframework.data.repository.CrudRepository;
 
-//@SuppressWarnings("unchecked")
+@SuppressWarnings("unchecked")
 public interface IProfissionalDAO extends CrudRepository<Profissional, String> {
     Profissional findByCpf(String cpf);
 
 	Profissional findById(long id);
+
+	Profissional save(Profissional user);	
 
 	List<Profissional> findAll();
 

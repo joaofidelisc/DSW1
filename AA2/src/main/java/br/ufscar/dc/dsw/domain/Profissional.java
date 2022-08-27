@@ -13,8 +13,8 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="Profissional")
 public class Profissional extends User {	
-	@NotBlank
-	@Column(nullable = false, length = 100)
+	// @NotBlank
+	@Column(nullable = true, length = 100)
 	private String nomeArquivo;
 
     @NotBlank
@@ -24,6 +24,9 @@ public class Profissional extends User {
     @NotBlank
 	@Column(nullable = false, length = 50)
 	private String especialidade;
+
+	@Column(nullable = false, length = 45)
+    private String role;
 
 	@OneToMany(mappedBy = "profissional", cascade = CascadeType.REMOVE, orphanRemoval = false)
 	private List<Consulta> consultas;
@@ -50,5 +53,13 @@ public class Profissional extends User {
 
 	public void setNomeArquivo(String nomeArquivo) {
 		this.nomeArquivo = nomeArquivo;
+	}
+
+	public String getRole() {
+		return role;
+	}
+	
+	public void setRole(String role) {
+		this.role = role;
 	}
 }
