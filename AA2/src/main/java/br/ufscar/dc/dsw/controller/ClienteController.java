@@ -68,4 +68,16 @@ public class ClienteController {
 		attr.addFlashAttribute("sucess", "cliente.edit.sucess");
 		return "redirect:/clientes/listar";
 	}
+    
+    @GetMapping("/excluir/{id}")
+	public String excluir(@PathVariable("id") Long id, ModelMap model) {
+		//se tem consulta agendada
+        //if (service.editoraTemLivros(id)) {
+			//model.addAttribute("fail", "editora.delete.fail");
+		//} else {
+			service.excluir(id);
+			model.addAttribute("sucess", "cliente.delete.sucess");
+		//}
+		return listar(model);
+	}
 }
