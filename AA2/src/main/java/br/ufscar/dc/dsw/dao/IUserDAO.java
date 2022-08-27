@@ -24,4 +24,7 @@ public interface IUserDAO extends CrudRepository<User, String> {
 	User save(User user);
 
 	void deleteById(Long id);
+
+	User findBycpf(String cpf);
+
 }
