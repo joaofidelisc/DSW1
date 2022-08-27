@@ -43,9 +43,9 @@
         <div class="row mb-3">
             <div class="col-4">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email"	aria-describedby="emailHelp" required th:field="*{username}" ${flagReadonly}>
+                <input type="email" th:readonly="${cliente!=null ? 'true' : 'false'}" class="form-control" id="email" name="email"	aria-describedby="emailHelp" required th:field="*{username}" ${flagReadonly}>
             </div>
-            <div class="col-4">
+            <div th:if="cliente==null" class="col-4">
                 <label for="inputPassword1" class="form-label">Senha</label> 
                 <input type="password" class="form-control" name="senha" id="inputPassword1" th:field="*{password}">
             </div>
@@ -61,7 +61,7 @@
         <div class="row mb-3">
             <div class="col-2">
                 <label for="cpf" class="form-label">CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" aria-describedby="cpfHelp" required th:field="*{cpf}" ${flagReadonly}>
+                <input type="text" class="form-control" id="cpf" name="cpf" aria-describedby="cpfHelp" required th:field="*{cpf}">
             </div>
             <div class="col-5">
                 <label for="nome" class="form-label">Nome</label> 

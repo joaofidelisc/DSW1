@@ -48,9 +48,9 @@
                             <td th:text="${cliente.username}"></td>
                             <td th:text="${cliente.telefone}"></td>
                             <td th:text="${cliente.genero}"></td>
-                            <td> Nascimento</td>
+                            <td th:text="${cliente.getdataNascimento()}"> </td>
                             <td>
-                                <a href="a"><button type="button" class="btn btn-primary">Editar<i class="fa-solid fa-trash-can"></i></button></a>
+                                <a th:href="@{/clientes/editar/{id} (id=${cliente.id}) }"><button type="button" class="btn btn-primary">Editar<i class="fa-solid fa-trash-can"></i></button></a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a href="a" onclick=" return confirm('Tem certeza de que deseja apagar este cliente?');"><button type="button" class="btn btn-danger">Apagar <i class="fa-solid fa-trash-can"></i></button> </a>
                             </td>

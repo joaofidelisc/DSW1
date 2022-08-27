@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +48,22 @@ public class ClienteController {
         service.salvar(cliente);
         attr.addFlashAttribute("success", "cliente.create.success");
         return "redirect:/clientes/listar";
-    }   
+    }
+
+    @GetMapping("/editar/{id}")
+	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
+		model.addAttribute("cliente", service.buscarPorId(id));
+		return "cliente/cadastro";
+	}
+	
+	@PostMapping("/editar")
+	public String editar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
+		if (result.getFieldErrorCount() > 1 || result.getFieldError("cpf") == null) {
+			return "cliente/cadastro";
+		}
+
+		service.salvar(cliente);
+		attr.addFlashAttribute("sucess", "cliente.edit.sucess");
+		return "redirect:/clientes/listar";
+	}
 }

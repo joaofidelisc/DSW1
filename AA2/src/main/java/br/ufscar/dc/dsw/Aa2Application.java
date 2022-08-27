@@ -29,7 +29,7 @@ public class Aa2Application {
 			user.setPassword("123");
 			user.setRole("ADMIN");
 			user.setEnabled(true);
-			usuarioDAO.save(user);*/
+			usuarioDAO.save(user);
 
             Cliente clt = new Cliente();
             clt.setConsultas(null);
@@ -94,7 +94,7 @@ public class Aa2Application {
 			client2.setGenero("M");
 			client2.setdataNascimento("1999-05-04");
 			client2.setEnabled(true);
-			usuarioDAO.save(client2);
+			usuarioDAO.save(client2);*/
 		};
 	}
 
