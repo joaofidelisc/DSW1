@@ -33,20 +33,19 @@ public class ClienteController {
     @GetMapping("/listar")
     public String listar(ModelMap model){
         model.addAttribute("clientes", service.buscarTodos() );
-        return "cliente/lista";
+        return "cliente/lista"; 
     }
 
     @PostMapping("/salvar")
     public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
         if( result.hasErrors() ){
+            System.out.println(result.toString());
             return "cliente/cadastro";
         }
+        cliente.setEnabled(true);
+        cliente.setRole("ROLE_CLIENTE");
         service.salvar(cliente);
         attr.addFlashAttribute("success", "cliente.create.success");
         return "redirect:/clientes/listar";
-    }
-
-
-    
-    
+    }   
 }

@@ -75,7 +75,7 @@
             </div>
             <div class="col-3">
                 <label for="sexo" class="form-label">Sexo</label> 
-                <select class="form-select" aria-label="Selecione" id="sexo" name="sexo">
+                <select class="form-select" aria-label="Selecione" id="sexo" name="sexo" th:field="*{genero}">
                     <option value="F" th:selected="${cliente.genero==F}">Feminino</option>
                     <option value="M" th:selected="${cliente.genero==M}">Masculino</option>
                     <option value="N" th:selected="${cliente.genero==N}">Prefiro não responder</option>

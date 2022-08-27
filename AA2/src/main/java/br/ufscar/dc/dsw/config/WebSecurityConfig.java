@@ -40,9 +40,9 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 @Override
 protected void configure(HttpSecurity http) throws Exception {
    http.authorizeRequests()
-   		.antMatchers("/", "/index", "/clientes/listar", "/error","/profissionais/listar","/profissionais/cadastrar","/profissionais/salvar", "/clientes/cadastrar","/profissionais/download/**", "/clientes/salvar").permitAll()
-   		.antMatchers("/login/**", "/js/**", "/css/**","/image/**", "/webjars/**").permitAll()
-		.antMatchers("/cliente/listar","/cliente/cadastrar", "clientes/listar", "clientes/salvar","/professionals/editar").hasAuthority("ADMIN")
+   		.antMatchers("/profissionais/listar").permitAll()
+   		.antMatchers("/", "/index", "/error", "/login/**", "/js/**", "/css/**","/image/**", "/webjars/**").permitAll()
+		.antMatchers("/cliente/**", "clientes/**").hasRole("ADMIN")
    		.anyRequest().authenticated()
    	.and()
    		.formLogin()
