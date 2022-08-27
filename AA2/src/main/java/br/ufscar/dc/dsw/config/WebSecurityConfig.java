@@ -49,8 +49,9 @@ protected void configure(HttpSecurity http) throws Exception {
    		.loginPage("/login")
    		.permitAll()
    	.and()
-   		.logout()
-   		.logoutSuccessUrl("/")
-   		.permitAll();
+       .logout()
+       .logoutUrl("/logout")
+       .logoutSuccessUrl("/login")
+   	   .permitAll();
 	}
 }

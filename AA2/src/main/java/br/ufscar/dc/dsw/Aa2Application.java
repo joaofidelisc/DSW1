@@ -38,7 +38,7 @@ public class Aa2Application {
             clt.setGenero("M");
             clt.setName("Luiz");
             clt.setPassword(encoder.encode("123"));
-            clt.setRole("ADMIN");
+            clt.setRole("ROLE_ADMIN");
             clt.setTelefone("149984424121");
             clt.setUsername("luiz@mail.com");
             clt.setdataNascimento("16/01/2000");
@@ -76,7 +76,7 @@ public class Aa2Application {
 			client1.setUsername("joao@mail.com");
 			client1.setName("João Vitor Fidelis Cardozo");
 			client1.setPassword(encoder.encode("123"));
-			client1.setRole("CLIENT");
+			client1.setRole("ROLE_CLIENTE");
 			client1.setCpf("41438691874");
 			client1.setTelefone("16999922222");
 			client1.setGenero("M");
@@ -88,7 +88,7 @@ public class Aa2Application {
 			client2.setUsername("matteus@mail.com");
 			client2.setName("Matteus Souza");
 			client2.setPassword(encoder.encode("123"));
-			client2.setRole("CLIENT");
+			client2.setRole("ROLE_PROF");
 			client2.setCpf("11111111111111");
 			client2.setTelefone("99999999999");
 			client2.setGenero("M");
