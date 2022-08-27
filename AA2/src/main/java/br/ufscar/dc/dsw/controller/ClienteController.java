@@ -43,7 +43,7 @@ public class ClienteController {
         }
         service.salvar(cliente);
         attr.addFlashAttribute("success", "cliente.create.success");
-        return "redirect:/";
+        return "redirect:/clientes/listar";
     }
 
 
