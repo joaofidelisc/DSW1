@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="Profissional")
 public class Profissional extends User {	
-	// @NotBlank
+	@NotBlank
 	@Column(nullable = true, length = 100)
 	private String nomeArquivo;
 

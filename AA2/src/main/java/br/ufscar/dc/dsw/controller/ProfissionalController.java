@@ -35,7 +35,7 @@ public class ProfissionalController {
     @GetMapping("/listar")
     public String listar(ModelMap model){
         model.addAttribute("profissionais", service.buscarTodos() );
-        return "cliente/lista"; 
+        return "profissional/lista"; 
     }
 
     @PostMapping("/salvar")
@@ -49,7 +49,7 @@ public class ProfissionalController {
         profissional.setRole("ROLE_PROF");
         service.salvar(profissional);
         attr.addFlashAttribute("success", "profissional.create.success");
-        return "redirect:/profissional/listar";
+        return "redirect:/profissionais/listar";
     }
 
     // @GetMapping("/editar/{id}")

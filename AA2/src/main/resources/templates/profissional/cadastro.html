@@ -88,22 +88,19 @@
                     <option value="Psicologia" th:selected="${profissional.areaDeConhecimento==Psicologia}">Psicologia</option>
                 </select>
             </div>
-        </div>
-
-        <div class="row mb-3">
             <div class="col-3">
                 <label for="especialidade" class="form-label">Especialidade</label> 
                 <select class="form-select" aria-label="Selecione" id="especialidade" name="especialidade" th:field="*{especialidade}">
-                    <option value="Cardiologista" th:selected="${profissional.especialidade==Cardiologista}">Cardiologista</option>
-                    <!-- <option value="Advogado Criminal" th:selected="${profissional.especialidade==Advogado Criminal}">Advogado Criminal</option> -->
-                    <!-- <option value="Psicólogo Infantil" th:selected="${profissional.especialidade==Psicólogo Infantil}">Psicólogo Infantil</option> -->
+                    <option value="Cardiologista" th:selected="${profissional.especialidade=='Cardiologista'}">Cardiologista</option>
+                    <option value="Advogado Criminal" th:selected="${profissional.especialidade=='Advogado Criminal'}">Advogado Criminal</option>
+                    <option value="Psicólogo Infantil" th:selected="${profissional.especialidade=='Psicólogo Infantil'}">Psicólogo Infantil</option>
                 </select>
             </div>
         </div>
 
 
-
-		<!-- <div class="row">
+<!--
+		<div class="row">
 			<div class="col-2">
 					<label for="areaConhecimento" class="form-label">Área de conhecimento</label> 
 					<select class="form-select" aria-label="Selecione" required id="areaConhecimento" name="areaConhecimento" onclick='mudaEspecialidade(this.value)'>
@@ -115,17 +112,17 @@
 			</div>
 			<div class="col-3 mb-3">
 					<label for="especialidade" class="form-label">Especialidade</label>
-					<input type="text" class="form-control" id="especialidade" name="especialidade" required value="${profissional.especialidade}" readonly>
+					<input type="text" class="form-control" id="especialidade" name="especialidade" required th:field="*{especialidade}" readonly>
 			</div>
 
-		</div> -->
-		<!-- <div class="row mb-3">
+		</div>-->
+		<div class="row mb-3">
 			<div class="col-5">
 				  <label for="formFile" class="form-label">Qualificações profissionais</label>
-				  <input type="text" class="form-control" type="file" id="local_pdf" name="local_pdf" value="${profissional.local_pdf}">
+				  <input type="text" class="form-control" id="nomeArquivo" name="nomeArquivo" th:field="*{nomeArquivo}">
 			</div>
 		
-		</div> -->
+		</div>
 		
 		
 		
@@ -177,8 +174,8 @@
         </div>
     </div>
     
-    <input type="hidden" id="id" th:field="*{id}"> -->
-    <input type="hidden" id="nomeArquivo" th:field="*{nomeArquivo}">
+    <input type="hidden" id="id" th:field="*{id}"> 
+    <input type="hidden" id="nomeArquivo" th:field="*{nomeArquivo}">-->
     </form>
 </body>
 
