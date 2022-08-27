@@ -34,7 +34,7 @@ public class ClienteController {
     @GetMapping("/listar")
     public String listar(ModelMap model){
         model.addAttribute("clientes", service.buscarTodos() );
-        return "cliente/lista"; 
+        return "cliente/lista";
     }
 
     @PostMapping("/salvar")
@@ -53,12 +53,14 @@ public class ClienteController {
     @GetMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("cliente", service.buscarPorId(id));
+        model.addAttribute("senhaParam", service.buscarPorId(id).getPassword());
 		return "cliente/cadastro";
 	}
 	
 	@PostMapping("/editar")
 	public String editar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
-		if (result.getFieldErrorCount() > 1 || result.getFieldError("cpf") == null) {
+        cliente.setRole("ROLE_CLIENTE");
+		if (result.getFieldErrorCount() > 1 || result.getFieldError("cpf") != null) {
 			return "cliente/cadastro";
 		}
 

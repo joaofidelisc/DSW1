@@ -41,15 +41,22 @@
     
     
         <div class="row mb-3">
-            <div class="col-4">
+            <div th:if="${cliente.id!=null}" class="col-4">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" th:readonly="${cliente!=null ? 'true' : 'false'}" class="form-control" id="email" name="email"	aria-describedby="emailHelp" required th:field="*{username}" ${flagReadonly}>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required readonly th:field="*{username}">
             </div>
-            <div th:if="cliente==null" class="col-4">
-                <label for="inputPassword1" class="form-label">Senha</label> 
-                <input type="password" class="form-control" name="senha" id="inputPassword1" th:field="*{password}">
+            <div th:if="${cliente.id==null}" class="col-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required th:field="*{username}">
             </div>
+            <!-- <div th:if="cliente==null" class="col-4"> -->
+            <div th:if="${cliente.id==null}" class="col-4">
+                <label for="password" class="form-label">Senha</label>
+                <input type="password" class="form-control"  name="password" id="password" th:field="*{password}">
+            </div>
+            <input th:if="${cliente.id!=null}" type="hidden" name="password" id="password" th:field="*{password}">
         </div>
+        
     
         <br>
         <!--INFORMAÃÃES PESSOAIS-->
@@ -59,7 +66,11 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-2">
+            <div th:if="${cliente.id!=null}" class="col-2">
+                <label for="cpf" class="form-label">CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" aria-describedby="cpfHelp" required readonly th:field="*{cpf}">
+            </div>
+            <div th:if="${cliente.id==null}" class="col-2">
                 <label for="cpf" class="form-label">CPF</label>
                 <input type="text" class="form-control" id="cpf" name="cpf" aria-describedby="cpfHelp" required th:field="*{cpf}">
             </div>
@@ -93,6 +104,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" id="id" th:field="*{id}">
     </form>
 </body>
 
