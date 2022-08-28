@@ -52,9 +52,10 @@
                         <td th:text="${consulta.profissional.name}" sec:authorize="hasRole('CLIENTE')"></td>
                         <td th:if="${!consulta.cancelada}">
                             <a href="/<%=contextPath%>/consultas/cancelar?num_consulta=${consulta.num_consulta}"
-                                onclick="return confirm('Tem certeza de que deseja cancelar esta consulta?');"><button
-                                    type="button" class="btn btn-danger">Cancelar<i
-                                        class="fa-solid fa-trash-can"></i></button></a>
+                                onclick="return confirm('Tem certeza de que deseja cancelar esta consulta?');"
+                                ><button type="button" class="btn btn-danger"
+                                    >Cancelar<i class="fa-solid fa-trash-can"></i
+                                ></button></a>
                         </td>
                         <td th:if="${consulta.cancelada}">Consulta cancelada</td>
 

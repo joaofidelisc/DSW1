@@ -34,4 +34,14 @@ public class ConsultaService implements IConsultaService{
     public List<Consulta> buscarTodos(){
         return dao.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public List<Consulta> buscarTodosPorIdCliente(Long id){
+        return dao.findAllBycliente_id(id.longValue());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Consulta> buscarTodosPorIdProfissional(Long id){
+        return dao.findAllByprofissional_id(id.longValue());
+    }
 }

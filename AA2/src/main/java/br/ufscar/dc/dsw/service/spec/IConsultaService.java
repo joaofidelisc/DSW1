@@ -9,6 +9,10 @@ public interface IConsultaService {
 
     List<Consulta> buscarTodos();
 
+    public List<Consulta> buscarTodosPorIdCliente(Long Id);
+
+    public List<Consulta> buscarTodosPorIdProfissional(Long Id);
+
     void salvar(Consulta consulta);
 
     void excluir(Long id);

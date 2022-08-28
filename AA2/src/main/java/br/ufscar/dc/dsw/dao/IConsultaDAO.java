@@ -15,6 +15,10 @@ public interface IConsultaDAO extends CrudRepository<Consulta, Long> {
 
     List<Consulta> findAll();
 
+    List<Consulta> findAllBycliente_id(long cliente_id);
+
+    List<Consulta> findAllByprofissional_id(long cliente_id);
+
     Consulta save(Consulta consulta);
 
     // List<Consulta> buscarPorCliente(Cliente cliente);
