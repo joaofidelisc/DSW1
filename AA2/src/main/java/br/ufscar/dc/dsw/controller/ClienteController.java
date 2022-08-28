@@ -6,6 +6,7 @@ import br.ufscar.dc.dsw.service.spec.IClienteService;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -36,13 +37,14 @@ public class ClienteController {
     }
 
     @PostMapping("/salvar")
-    public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
+    public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
         if( result.hasErrors() ){
             System.out.println(result.toString());
             return "cliente/cadastro";
         }
         cliente.setEnabled(true);
         cliente.setRole("ROLE_CLIENTE");
+        cliente.setPassword(encoder.encode(cliente.getPassword()));
         service.salvar(cliente);
         attr.addFlashAttribute("success", "cliente.create.success");
         return "redirect:/clientes/listar";

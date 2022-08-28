@@ -22,7 +22,7 @@
 <body>
     <div th:replace="fragments/header :: header"></div>
     <div class="container">
-        <form action="/<%=contexto1%>/profissionais" method="post">
+        <form action="/profissionais/listar" method="get">
             <div class="row mb-3">
                 <div class="col">
                     <h1>Filtros</h1>
@@ -32,19 +32,19 @@
                 <div class="col-3">
                     <h5>Área de Conhecimento</h5>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="checkArea" value="Medicina">
+                        <input class="form-check-input" type="checkbox" id="areaDeConhecimento" name="areaDeConhecimento" value="Medicina">
                         <label class="form-check-label" for="checkMedicina">
                             Medicina
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="checkArea" value="Advocacia">
+                        <input class="form-check-input" type="checkbox" name="areaDeConhecimento" value="Advocacia">
                         <label class="form-check-label" for="checkAdvocacia">
                             Advocacia
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="checkArea" value="Psicologia">
+                        <input class="form-check-input" type="checkbox" name="areaDeConhecimento" value="Psicologia">
                         <label class="form-check-label" for="checkPsicologia">
                             Psicologia
                         </label>
@@ -53,20 +53,20 @@
                 <div class="col-3">
                     <h5>Especialidade</h5>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="checkEspecialidade" value="Cardiologista">
+                        <input class="form-check-input" type="checkbox" name="especialidade" value="Cardiologista">
                         <label class="form-check-label" for="checkCardiologista">
                             Cardiologista
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="checkEspecialidade"
+                        <input class="form-check-input" type="checkbox" name="especialidade"
                             value="Advogado Criminal">
                         <label class="form-check-label" for="checkAdvogadoCriminal">
                             Advogado Criminal
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="checkbox" name="checkEspecialidade"
+                        <input class="form-check-input" type="checkbox" name="especialidade"
                             value="Psicologo Infantil">
                         <label class="form-check-label" for="checkPsicologoInfantil">
                             Psicologo Infantil
@@ -80,6 +80,7 @@
                     <button type="reset" class="btn btn-secondary">Limpar</button>
                 </div>
             </div>
+            
         </form>
         <div class="row mb-3">
             <div class="col">

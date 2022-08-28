@@ -6,10 +6,14 @@ import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -38,16 +42,36 @@ public class ProfissionalController {
         return "profissional/cadastro";
     }
 
+
     @GetMapping("/listar")
-    public String listar(ModelMap model){
-        model.addAttribute("profissionais", service.buscarTodos() );
+    public String listar(ModelMap model, @RequestParam(required=false) String especialidade, @RequestParam(required=false) String areaDeConhecimento){
+        List<Profissional> profissionais = service.buscarTodos();
+		Set<String> especialidadeHash = new HashSet<String>();
+		System.out.println("1");
+		if (areaDeConhecimento != null && !areaDeConhecimento.isEmpty()){
+			System.out.println(areaDeConhecimento);
+			profissionais = service.buscarPorAreaDeConhecimento(areaDeConhecimento);
+			for (Profissional profissional : profissionais){
+				String especialidadeAux = profissional.getEspecialidade();
+				if (!especialidadeHash.contains(especialidadeAux)){
+					especialidadeHash.add(especialidadeAux);
+				}
+			}
+		}
+		System.out.println("3");
+
+		if (especialidade != null && !especialidade.isEmpty()){
+			profissionais = service.buscarPorEspecialidade(especialidade);
+		}
+
+		model.addAttribute("profissionais", profissionais);
         return "profissional/lista"; 
     }
 
 
 
     @PostMapping("/salvar")
-    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file) throws IOException {
+    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file, BCryptPasswordEncoder encoder) throws IOException {
         System.out.println("\n\n1");
 		String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
 		profissional.setQualificacoes(file.getBytes());
@@ -62,7 +86,7 @@ public class ProfissionalController {
         
         profissional.setEnabled(true);
         profissional.setRole("ROLE_PROF");
-
+		profissional.setPassword(encoder.encode(profissional.getPassword()));
 
         service.salvar(profissional);
         attr.addFlashAttribute("success", "profissional.create.success");
@@ -86,17 +110,17 @@ public class ProfissionalController {
 		attr.addFlashAttribute("sucess", "profissional.edit.sucess");
 	 	return "redirect:/profissionais/listar";
 	}
-    @GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
-		//se tem consulta agendada
-        //if (service.editoraTemLivros(id)) {
-			//model.addAttribute("fail", "editora.delete.fail");
-		//} else {
-			service.excluir(id);
-			model.addAttribute("sucess", "cliente.delete.sucess");
-		//}
-		return listar(model);
-	}
+    // @GetMapping("/excluir/{id}")
+	// public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	// 	//se tem consulta agendada
+    //     //if (service.editoraTemLivros(id)) {
+	// 		//model.addAttribute("fail", "editora.delete.fail");
+	// 	//} else {
+	// 		service.excluir(id);
+	// 		model.addAttribute("sucess", "cliente.delete.sucess");
+	// 	//}
+	// 	return listar(model);
+	// }
 
     @GetMapping(value = "/download/{id}")
 	public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id) {
