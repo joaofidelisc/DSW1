@@ -24,7 +24,7 @@
                 <h1 class="nav-item" sec:authorize="!isAuthenticated()">Olá, seja bem vindo(a) ao sistema de agendamento!</h1>
 
                 <!-- FALTA ALTERAR O NOME DO USUÁRIO AQUI -->
-                <h1 class="nav-item" sec:authorize="isAuthenticated()">Olá NOMEUSUÁRIO, seja bem vindo(a) ao sistema de agendamento!</h1>
+                <h1 class="nav-item" sec:authorize="isAuthenticated()">Olá <span sec:authentication="name">, seja bem vindo(a) ao sistema de agendamento!</h1>
                 
             </div>
         </div>
