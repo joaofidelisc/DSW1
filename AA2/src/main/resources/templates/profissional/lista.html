@@ -111,7 +111,7 @@
                             <td th:text="${profissional.especialidade}"></td>
                             <!-- <td style="text-align: center"><a class="btn btn-primary btn-lg active" th:href="@{/professionas/download/{id} (id=${profissional.id}) }" th:text="Currículo"></a></td> -->
                             <!-- <td><a th:href="${profissional.nomeArquivo}" target="_blank">Currículo</a></td> -->
-                            <td><a th:href="@{/profissionais/download/{id} (id=${profissional.id}) }">Currículo</a></td>
+                            <td><a th:href="@{/profissionais/download/{id} (id=${profissional.id}) }" target="_blank">Currículo</a></td>
                             
                             <td sec:authorize="hasRole('ADMIN')">
                                 <a th:href="@{/profissionais/editar/{id} (id=${profissional.id}) }"><button type="button" class="btn btn-primary">Editar<i class="fa-solid fa-trash-can"></i></button></a>
