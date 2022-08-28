@@ -21,29 +21,14 @@ public class Aa2Application {
 	// public CommandLineRunner demo(UserDAO usuarioDAO, ProfessionalDAO locadoraDAO, BCryptPasswordEncoder encoder) {
 	public CommandLineRunner demo(IUserDAO usuarioDAO, BCryptPasswordEncoder encoder) {
 		return (args) -> {
-
-			
-			// byte[] ba2 = {1, 2, 3, 4, 5};
-			// Profissional profissional1 = new Profissional();
-			// profissional1.setUsername("joao@mail.com");
-			// profissional1.setName("Joao Cardozo");
-			// profissional1.setPassword("123");
-			// profissional1.setRole("ROLE_PROF");
-
-			Cliente clt = new Cliente();
-            clt.setConsultas(null);
-            clt.setCpf("44071481870");
-            clt.setEnabled(true);
-            clt.setGenero("M");
-            clt.setName("Luiz");
-            clt.setPassword(encoder.encode("123"));
-            clt.setRole("ROLE_ADMIN");
-            clt.setTelefone("149984424121");
-            clt.setUsername("luiz@mail.com");
-            clt.setdataNascimento("2000-01-16");
-            usuarioDAO.save(clt);
-			
-			/*
+		 	User user = new User();
+		    	user.setCpf("440.714.818-70");
+		    	user.setEnabled(true);
+		    	user.setName("Luiz Lipe");
+		    	user.setPassword(encoder.encode("123"));
+		    	user.setRole("ROLE_ADMIN");
+		    	user.setUsername("luiz@mail.com");
+		    	usuarioDAO.save(user);
  
 			Cliente client1 = new Cliente();
 			client1.setUsername("joao@mail.com");
@@ -64,10 +49,10 @@ public class Aa2Application {
 			client2.setRole("ROLE_PROF");
 			client2.setCpf("11111111111111");
 			client2.setAreaDeConhecimento("Medicina");
-            client2.setEspecialidade("Cardiologista");
-            client2.setNomeArquivo("arq.pdf");
+            		client2.setEspecialidade("Cardiologista");
+            		client2.setNomeArquivo("arq.pdf");
 			client2.setEnabled(true);
-			usuarioDAO.save(client2);*/
+			usuarioDAO.save(client2);
 		};
 	}
 
