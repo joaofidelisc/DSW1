@@ -52,20 +52,21 @@ public class ProfissionalController {
         return "redirect:/profissionais/listar";
     }
 
-    // @GetMapping("/editar/{id}")
-	// public String preEditar(@PathVariable("id") Long id, ModelMap model) {
-	// 	model.addAttribute("cliente", service.buscarPorId(id));
-	// 	return "cliente/cadastro";
-	// }
+    @GetMapping("/editar/{id}")
+	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
+		model.addAttribute("profissional", service.buscarPorId(id));
+		return "profissional/cadastro";
+	}
 	
-	// @PostMapping("/editar")
-	// public String editar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
-	// 	if (result.getFieldErrorCount() > 1 || result.getFieldError("cpf") == null) {
-	// 		return "cliente/cadastro";
-	// 	}
+	@PostMapping("/editar")
+    public String editar(@Valid Profissional prof, BindingResult result, RedirectAttributes attr) {
+        prof.setRole("ROLE_PROF");
+		if (result.getFieldErrorCount() > 1 || result.getFieldError("cpf") != null) {
+			return "profissional/cadastro";
+	    }
 
-	// 	service.salvar(cliente);
-	// 	attr.addFlashAttribute("sucess", "cliente.edit.sucess");
-	// 	return "redirect:/clientes/listar";
-	// }
+		service.salvar(prof);
+		attr.addFlashAttribute("sucess", "profissional.edit.sucess");
+	 	return "redirect:/profissionais/listar";
+	}
 }

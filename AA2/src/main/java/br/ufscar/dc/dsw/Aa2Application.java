@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import br.ufscar.dc.dsw.domain.*;
+//import br.ufscar.dc.dsw.domain.*;
 import br.ufscar.dc.dsw.dao.*;
 
 @SpringBootApplication

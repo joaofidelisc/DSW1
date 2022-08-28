@@ -112,9 +112,9 @@
                             <td><a th:href="${profissional.nomeArquivo}" target="_blank">Currículo</a></td>
                             
                             <td sec:authorize="hasRole('ADMIN')">
-                                <a href="/<%=contextPath%>/profissionais/edicao?cpf=${profissional.cpf}"><button type="button" class="btn btn-primary">Editar<i class="fa-solid fa-trash-can"></i></button></a>
+                                <a th:href="@{/profissionais/editar/{id} (id=${profissional.id}) }"><button type="button" class="btn btn-primary">Editar<i class="fa-solid fa-trash-can"></i></button></a>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a href="/<%=contextPath%>/profissionais/remocao?cpf=${profissional.cpf}" onclick="return confirm('Tem certeza de que deseja apagar este profissional?');" ><button type="button" class="btn btn-danger" >Apagar <i class="fa-solid fa-trash-can"></i></button></a>
+                                <a th:href="@{/profissionais/excluir/{id} (id=${profissional.id}) }" onclick="return confirm('Tem certeza de que deseja apagar este profissional?');" ><button type="button" class="btn btn-danger" >Apagar <i class="fa-solid fa-trash-can"></i></button></a>
                             </td>
                             <!--  se for cliente, ele pode agendar uma consulta -->
                             <td sec:authorize="hasRole('CLIENTE')">
