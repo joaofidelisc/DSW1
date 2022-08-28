@@ -40,6 +40,4 @@ public class ClienteService implements IClienteService{
         //retornar true se ja tiver uma data marcada
 		return false; 
 	}
-
-
 }

@@ -8,12 +8,15 @@ import org.springframework.data.repository.CrudRepository;
 import br.ufscar.dc.dsw.domain.Consulta;
 //import br.ufscar.dc.dsw.domain.Profissional;
 
-
+@SuppressWarnings("unchecked")
 public interface IConsultaDAO extends CrudRepository<Consulta, Long> {
     
     Consulta findById(long id);
 
     List<Consulta> findAll();
+
+    Consulta save(Consulta consulta);
+
     // List<Consulta> buscarPorCliente(Cliente cliente);
     // List<Consulta> buscarPorProfissional(Profissional profissional);
 

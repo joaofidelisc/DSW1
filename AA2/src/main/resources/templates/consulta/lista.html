@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clínica</title>
+    <link href="#" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+        integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div th:replace="fragments/header :: header"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Olá, <span sec:authentication="name"></span>. Aqui estão as suas
+                    consultas.</h1>
+            </div>
+        </div>
+        <br>
+        <div>
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Hora</th>
+                        <!-- se ele for prof nao precisa ver ele mesmo -->
+                        <th sec:authorize="hasRole('PROF')" scope="col">Cliente</th>
+                        <!-- se ele for cliente nao precisa ver ele mesmo -->
+                        <th sec:authorize="hasRole('CLIENTE')" scope="col">Profissional</th>
+                        <th scope="col">Operações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="consulta : ${consultas}" class="${consulta.cancelada == true ? 'table-danger' : ''}">
+                        <th th:text="${consulta.dataConsulta.substring(8,10)+'/'+consulta.dataConsulta.substring(5,7)+'/'+consulta.dataConsulta.substring(0,4)}" scope="row"></th>
+                        <td th:text="${consulta.horaConsulta}"></td>
+                        <!-- se ele for prof nao precisa ver ele mesmo -->
+                        <td th:text="${consulta.cliente.name}" sec:authorize="hasRole('PROF')"></td>
+                        <!-- se ele for cliente nao precisa ver ele mesmo -->
+                        <td th:text="${consulta.profissional.name}" sec:authorize="hasRole('CLIENTE')"></td>
+                        <td th:if="${!consulta.cancelada}">
+                            <a href="/<%=contextPath%>/consultas/cancelar?num_consulta=${consulta.num_consulta}"
+                                onclick="return confirm('Tem certeza de que deseja cancelar esta consulta?');"><button
+                                    type="button" class="btn btn-danger">Cancelar<i
+                                        class="fa-solid fa-trash-can"></i></button></a>
+                        </td>
+                        <td th:if="${consulta.cancelada}">Consulta cancelada</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

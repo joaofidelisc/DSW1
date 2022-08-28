@@ -27,7 +27,10 @@ public class Consulta extends AbstractEntity<Long> {
 	private String dataConsulta;
     
 	@Column(nullable = false, unique = false)
-	private int horaConsulta;
+	private String horaConsulta;
+
+    @Column(nullable = false, unique = false)
+    private String cancelada;
 
     public Cliente getCliente() {
 		return cliente;
@@ -53,11 +56,21 @@ public class Consulta extends AbstractEntity<Long> {
 		this.dataConsulta = data;
 	}
 
-    public int getHoraConsulta() {
+    public String getHoraConsulta() {
 		return horaConsulta;
 	}
 
-	public void setHoraConsulta(int hour) {
+	public void setHoraConsulta(String hour) {
 		this.horaConsulta = hour;
 	}
+
+    public String getCancelada() {
+		return cancelada;
+	}
+
+	public void setCancelada(String canc) {
+		this.cancelada = canc;
+	}
+
+
 }
