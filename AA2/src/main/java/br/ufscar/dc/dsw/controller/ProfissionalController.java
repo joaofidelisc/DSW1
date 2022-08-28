@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -47,7 +48,7 @@ public class ProfissionalController {
 
 
     @PostMapping("/salvar")
-    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file) throws IOException {
+    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file, BCryptPasswordEncoder encoder) throws IOException {
         System.out.println("\n\n1");
 		String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
 		profissional.setQualificacoes(file.getBytes());
@@ -62,7 +63,7 @@ public class ProfissionalController {
         
         profissional.setEnabled(true);
         profissional.setRole("ROLE_PROF");
-
+		profissional.setPassword(encoder.encode(profissional.getPassword()));
 
         service.salvar(profissional);
         attr.addFlashAttribute("success", "profissional.create.success");

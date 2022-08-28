@@ -21,38 +21,38 @@ public class Aa2Application {
 	// public CommandLineRunner demo(UserDAO usuarioDAO, ProfessionalDAO locadoraDAO, BCryptPasswordEncoder encoder) {
 	public CommandLineRunner demo(IUserDAO usuarioDAO, BCryptPasswordEncoder encoder) {
 		return (args) -> {
-		 	User user = new User();
-		    	user.setCpf("440.714.818-70");
-		    	user.setEnabled(true);
-		    	user.setName("Luiz Lipe");
-		    	user.setPassword(encoder.encode("123"));
-		    	user.setRole("ROLE_ADMIN");
-		    	user.setUsername("luiz@mail.com");
-		    	usuarioDAO.save(user);
+		 	// User user = new User();
+		    // 	user.setCpf("440.714.818-70");
+		    // 	user.setEnabled(true);
+		    // 	user.setName("Luiz Lipe");
+		    // 	user.setPassword(encoder.encode("123"));
+		    // 	user.setRole("ROLE_ADMIN");
+		    // 	user.setUsername("luiz@mail.com");
+		    // 	usuarioDAO.save(user);
  
-			Cliente client1 = new Cliente();
-			client1.setUsername("joao@mail.com");
-			client1.setName("João Vitor Fidelis Cardozo");
-			client1.setPassword(encoder.encode("123"));
-			client1.setRole("ROLE_CLIENTE");
-			client1.setCpf("41438691874");
-			client1.setTelefone("16999922222");
-			client1.setGenero("M");
-			client1.setdataNascimento("1998-06-10");
-			client1.setEnabled(true);
-			usuarioDAO.save(client1);
+			// Cliente client1 = new Cliente();
+			// client1.setUsername("joao@mail.com");
+			// client1.setName("João Vitor Fidelis Cardozo");
+			// client1.setPassword(encoder.encode("123"));
+			// client1.setRole("ROLE_CLIENTE");
+			// client1.setCpf("41438691874");
+			// client1.setTelefone("16999922222");
+			// client1.setGenero("M");
+			// client1.setdataNascimento("1998-06-10");
+			// client1.setEnabled(true);
+			// usuarioDAO.save(client1);
 			
-			Profissional client2 = new Profissional();
-			client2.setUsername("matteus@mail.com");
-			client2.setName("Matteus Souza");
-			client2.setPassword(encoder.encode("123"));
-			client2.setRole("ROLE_PROF");
-			client2.setCpf("11111111111111");
-			client2.setAreaDeConhecimento("Medicina");
-            		client2.setEspecialidade("Cardiologista");
-            		client2.setNomeArquivo("arq.pdf");
-			client2.setEnabled(true);
-			usuarioDAO.save(client2);
+			// Profissional client2 = new Profissional();
+			// client2.setUsername("matteus@mail.com");
+			// client2.setName("Matteus Souza");
+			// client2.setPassword(encoder.encode("123"));
+			// client2.setRole("ROLE_PROF");
+			// client2.setCpf("11111111111111");
+			// client2.setAreaDeConhecimento("Medicina");
+            // 		client2.setEspecialidade("Cardiologista");
+            // 		client2.setNomeArquivo("arq.pdf");
+			// client2.setEnabled(true);
+			// usuarioDAO.save(client2);
 		};
 	}
 
