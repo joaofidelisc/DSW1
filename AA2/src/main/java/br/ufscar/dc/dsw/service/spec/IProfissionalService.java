@@ -14,6 +14,8 @@ public interface IProfissionalService {
 
 	void salvar(Profissional profissional);
 
+    void excluir(Long id);
+
 	List<Profissional> buscarPorEspecialidade(String especialidade);
 
     List<Profissional> buscarPorAreaDeConhecimento(String areaDeConhecimento);

@@ -13,6 +13,8 @@ public interface IProfissionalDAO extends CrudRepository<Profissional, String> {
 
 	List<Profissional> findAll();
 
+    void deleteById(Long id);
+    
 	List<Profissional> findByEspecialidade(String especialidade);
 
     List<Profissional> findByAreaDeConhecimento(String areaDeConhecimento);
