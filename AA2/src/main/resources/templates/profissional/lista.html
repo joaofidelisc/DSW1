@@ -118,7 +118,8 @@
                             </td>
                             <!--  se for cliente, ele pode agendar uma consulta -->
                             <td sec:authorize="hasRole('CLIENTE')">
-                                <a th:href="@{/consultas/agendar/{id_cliente}/{id_profissional} (id_cliente=1 ,id_profissional=${profissional.id})}"
+                                <!--<a th:href="@{/consultas/agendar/{id_cliente}/{id_profissional} (id_cliente=1 ,id_profissional=${profissional.id})}"-->
+                                <a th:href="@{/consultas/agendar}"
                                     ><button type="button" class="btn btn-primary"
                                         >Agendar Consulta<i class="fa-solid fa-trash-can"></i>
                                     </button>

@@ -69,11 +69,30 @@ public class ConsultaController {
     }
 
     @GetMapping("/agendar/{id_cliente}/{id_profissional}")
-    public String agendar(@PathVariable("id_cliente") Long idC, @PathVariable("id_profissional") Long idP, ModelMap model){
+    public String agendar(@PathVariable("id_cliente") Long idC, @PathVariable("id_profissional") Long idP, Consulta consulta, ModelMap model){
         model.addAttribute("cliente", clienteService.buscarPorId(idC));
         model.addAttribute("profissional", profissionalService.buscarPorId(idP));
         return "consulta/cadastro";
+    }
 
+        
+        
+    @PostMapping("/salvar")
+    public String salvar(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr) {
+        if( result.hasErrors() ){
+            System.out.println("AQUI Ó\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            System.out.println(result.toString());
+            return "cliente/cadastro";
+        }
+        consulta.setCancelada("false");
+        consulta.setDataConsulta("2022-01-16");
+        consulta.setHoraConsulta("16:01");
+        consulta.setCliente( clienteService.buscarPorId(new Long(1)) );
+        consulta.setProfissional( profissionalService.buscarPorId(new Long(1)) );
+        consulta.setId(new Long(11) );
+        service.salvar(consulta);
+        attr.addFlashAttribute("success", "cliente.create.success");
+        return "redirect:/clientes/listar";
     }
 
     
