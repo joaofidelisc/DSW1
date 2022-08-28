@@ -16,6 +16,39 @@
 </head>
 <body>
     <div th:replace="fragments/header :: header"></div>
+   
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col">
+
+                <h1 class="nav-item" sec:authorize="!isAuthenticated()">Olá, seja bem vindo(a) ao sistema de agendamento!</h1>
+
+                <!-- FALTA ALTERAR O NOME DO USUÁRIO AQUI -->
+                <h1 class="nav-item" sec:authorize="isAuthenticated()">Olá NOMEUSUÁRIO, seja bem vindo(a) ao sistema de agendamento!</h1>
+                
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h1>SISTEMA PARA AGENDAMENTO DE CONSULTAS ONLINE</h1>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col">
+                <h3>Integrantes</h1>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <h5>Italo Carvalho Vianelli Ribeiro</h5>
+                <h5>João Vitor Fidelis Cardozo</h5>
+                <h5>Luiz Filipe de Almeida Mattos</h5>
+                <h5>Matteus Guilherme De Souza</h5>
+                <h5>Sara Ferreira</h5>
+            </div>
+        </div>
+    </div>
     <div class="box">   
         <div id="image">
             <img src="https://www.imagemhost.com.br/images/2022/08/22/trabalhadores.png"
@@ -23,5 +56,6 @@
                 style="-webkit-mask-image: linear-gradient(to top, transparent 1%, black 100%); width: 50%; margin-left: auto; margin-right: auto;"/>
         </div>
     </div>
+
 </body>
 </html>

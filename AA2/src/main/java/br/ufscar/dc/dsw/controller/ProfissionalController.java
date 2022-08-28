@@ -6,6 +6,9 @@ import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -39,9 +42,29 @@ public class ProfissionalController {
         return "profissional/cadastro";
     }
 
+
     @GetMapping("/listar")
-    public String listar(ModelMap model){
-        model.addAttribute("profissionais", service.buscarTodos() );
+    public String listar(ModelMap model, @RequestParam(required=false) String especialidade, @RequestParam(required=false) String areaDeConhecimento){
+        List<Profissional> profissionais = service.buscarTodos();
+		Set<String> especialidadeHash = new HashSet<String>();
+		System.out.println("1");
+		if (areaDeConhecimento != null && !areaDeConhecimento.isEmpty()){
+			System.out.println(areaDeConhecimento);
+			profissionais = service.buscarPorAreaDeConhecimento(areaDeConhecimento);
+			for (Profissional profissional : profissionais){
+				String especialidadeAux = profissional.getEspecialidade();
+				if (!especialidadeHash.contains(especialidadeAux)){
+					especialidadeHash.add(especialidadeAux);
+				}
+			}
+		}
+		System.out.println("3");
+
+		if (especialidade != null && !especialidade.isEmpty()){
+			profissionais = service.buscarPorEspecialidade(especialidade);
+		}
+
+		model.addAttribute("profissionais", profissionais);
         return "profissional/lista"; 
     }
 
@@ -87,17 +110,17 @@ public class ProfissionalController {
 		attr.addFlashAttribute("sucess", "profissional.edit.sucess");
 	 	return "redirect:/profissionais/listar";
 	}
-    @GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
-		//se tem consulta agendada
-        //if (service.editoraTemLivros(id)) {
-			//model.addAttribute("fail", "editora.delete.fail");
-		//} else {
-			service.excluir(id);
-			model.addAttribute("sucess", "cliente.delete.sucess");
-		//}
-		return listar(model);
-	}
+    // @GetMapping("/excluir/{id}")
+	// public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	// 	//se tem consulta agendada
+    //     //if (service.editoraTemLivros(id)) {
+	// 		//model.addAttribute("fail", "editora.delete.fail");
+	// 	//} else {
+	// 		service.excluir(id);
+	// 		model.addAttribute("sucess", "cliente.delete.sucess");
+	// 	//}
+	// 	return listar(model);
+	// }
 
     @GetMapping(value = "/download/{id}")
 	public void download(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Long id) {
