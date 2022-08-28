@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="Profissional")
 public class Profissional extends User {	
-	@NotBlank
+	// @NotBlank
 	@Column(nullable = true, length = 100)
 	private String nomeArquivo;
 
@@ -30,6 +31,9 @@ public class Profissional extends User {
 
 	@OneToMany(mappedBy = "profissional", cascade = CascadeType.REMOVE, orphanRemoval = false)
 	private List<Consulta> consultas;
+
+	@Lob
+	private byte[] qualificacoes;
 
 	public String getAreaDeConhecimento() {
 		return areaDeConhecimento;
@@ -62,4 +66,13 @@ public class Profissional extends User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+	public void setQualificacoes(byte[] qualificacoes){
+		this.qualificacoes = qualificacoes;
+	}
+
+	public byte[] getQualificacoes(){
+		return qualificacoes;
+	}
+
 }

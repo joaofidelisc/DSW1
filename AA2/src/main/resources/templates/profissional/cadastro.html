@@ -23,7 +23,7 @@
     <div th:replace="fragments/header :: header"></div>
     <form
         th:action="${profissional.id == null} ? @{/profissionais/salvar} : @{/profissionais/editar}"
-        th:object="${profissional}" method="POST">
+        th:object="${profissional}" method="POST" enctype="multipart/form-data">
     
     <div class="container">
         <div class="row">
@@ -119,12 +119,23 @@
 		<div class="row mb-3">
 			<div class="col-5">
 				  <label for="formFile" class="form-label">Qualificações profissionais</label>
-				  <input type="text" class="form-control" id="nomeArquivo" name="nomeArquivo" th:field="*{nomeArquivo}">
-			</div>
+				  <!-- <input type="file" class="form-control" id="nomeArquivo" name="nomeArquivo" th:field="*{nomeArquivo}"> -->
+				  <input type="file" class="form-control" id="file" name="file" accept="application/pdf"> 
+                  <!-- <input class="form-control" type="file" name="file" accept="application/pdf" th:placeholder="Qualificações"/> -->
+            </div>
 		
 		</div>
 		
-		
+
+        <!-- <div>
+            <label th:text="#{professional.qualifications.label}"></label><br>
+            <input class="input" type="file" name="file" accept="application/pdf" th:placeholder="#{professional.qualifications.label}" />
+        </div> -->
+
+
+        <!-- <td style="text-align: center"><a class="btn btn-primary btn-lg active" th:href="@{/professionals/download/{id} (id=${profissional.id}) }" th:text="Currículo"></a></td>
+        <div sec:authorize="hasAuthority('ADMIN')">
+		 -->
 		
 		<div class="row">
 			<div class="col">
@@ -174,9 +185,9 @@
         </div>
     </div>
     
-    <input type="hidden" id="id" th:field="*{id}"> 
-    <input type="hidden" id="nomeArquivo" th:field="*{nomeArquivo}">-->
-    <input type="hidden" id="id" th:field="*{id}">
+    <input type="hidden" id="id" th:field="*{id}"> -->
+    <input type="hidden" id="nomeArquivo" th:field="*{nomeArquivo}">
+        <input type="hidden" id="id" th:field="*{id}">
     </form>
 </body>
 

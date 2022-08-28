@@ -22,7 +22,15 @@ public class Aa2Application {
 	public CommandLineRunner demo(IUserDAO usuarioDAO, BCryptPasswordEncoder encoder) {
 		return (args) -> {
 
-            /*Cliente clt = new Cliente();
+			
+			// byte[] ba2 = {1, 2, 3, 4, 5};
+			// Profissional profissional1 = new Profissional();
+			// profissional1.setUsername("joao@mail.com");
+			// profissional1.setName("Joao Cardozo");
+			// profissional1.setPassword("123");
+			// profissional1.setRole("ROLE_PROF");
+
+			Cliente clt = new Cliente();
             clt.setConsultas(null);
             clt.setCpf("44071481870");
             clt.setEnabled(true);
@@ -34,6 +42,8 @@ public class Aa2Application {
             clt.setUsername("luiz@mail.com");
             clt.setdataNascimento("2000-01-16");
             usuarioDAO.save(clt);
+			
+			/*
  
 			Cliente client1 = new Cliente();
 			client1.setUsername("joao@mail.com");
