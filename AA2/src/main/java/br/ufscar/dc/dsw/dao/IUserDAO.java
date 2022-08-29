@@ -16,6 +16,8 @@ public interface IUserDAO extends CrudRepository<User, String> {
     public User getUserByUsername(@Param("username") String username);
 
     User findById(long id);
+    
+    User findByCpf(long cpf);
 
 	User findByUsername(String username);
 

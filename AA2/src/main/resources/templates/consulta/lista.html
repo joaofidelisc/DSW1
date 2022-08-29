@@ -43,7 +43,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="consulta : ${consultas}" class="${consulta.cancelada == true ? 'table-danger' : ''}">
+                    <tr th:each="consulta : ${consultas}" th:class="${consulta.cancelada == 'true' ? 'table-danger' : ''}">
                         <th th:text="${consulta.dataConsulta.substring(8,10)+'/'+consulta.dataConsulta.substring(5,7)+'/'+consulta.dataConsulta.substring(0,4)}" scope="row"></th>
                         <td th:text="${consulta.horaConsulta}"></td>
                         <!-- se ele for prof nao precisa ver ele mesmo -->
@@ -51,7 +51,7 @@
                         <!-- se ele for cliente nao precisa ver ele mesmo -->
                         <td th:text="${consulta.profissional.name}" sec:authorize="hasRole('CLIENTE')"></td>
                         <td th:if="${!consulta.cancelada}">
-                            <a href="/<%=contextPath%>/consultas/cancelar?num_consulta=${consulta.num_consulta}"
+                            <a th:href="@{/consultas/cancelar/{id} (id = ${consulta.id})}"
                                 onclick="return confirm('Tem certeza de que deseja cancelar esta consulta?');"
                                 ><button type="button" class="btn btn-danger"
                                     >Cancelar<i class="fa-solid fa-trash-can"></i

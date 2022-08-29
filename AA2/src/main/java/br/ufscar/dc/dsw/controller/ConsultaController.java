@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,14 +89,20 @@ public class ConsultaController {
             return "cliente/cadastro";
         }
         consulta.setCancelada("false");
-        //consulta.setDataConsulta("2022-01-16");
-        //consulta.setHoraConsulta("16:01");
         consulta.setCliente( getClienteLogado()  );
         consulta.setProfissional( profissionalService.buscarPorId( id_profissional ) );
         service.salvar(consulta);
 
         attr.addFlashAttribute("success", "consulta.create.success");
         return "redirect:/consultas/listar";
+    }
+
+    @GetMapping("/cancelar/{id}")
+    public String cancelar(@PathVariable("id") Long id_consulta, Long id_profissional, ModelMap model) {
+        Consulta consulta = service.buscarPorId(id_consulta);
+        consulta.setCancelada("true");
+        service.salvar(consulta);
+        return listar(model);
     }
 
     

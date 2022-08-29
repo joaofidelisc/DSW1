@@ -2,6 +2,7 @@ package br.ufscar.dc.dsw.controller;
 
 //import java.util.List;
 import br.ufscar.dc.dsw.service.spec.IClienteService;
+import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 
 import javax.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufscar.dc.dsw.dao.IUserDAO;
 import br.ufscar.dc.dsw.domain.Cliente;
 
 @Controller
@@ -24,6 +26,8 @@ public class ClienteController {
     
     @Autowired
     private IClienteService service;
+    @Autowired
+    private IUserDAO userDao;
     
     @GetMapping("/cadastrar")
     public String cadastrar(Cliente cliente){
@@ -38,9 +42,13 @@ public class ClienteController {
 
     @PostMapping("/salvar")
     public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
+        if( userDao.findBycpf( cliente.getCpf()) != null ){
+            attr.addFlashAttribute("erro", "CPF já foi cadastrado. Tente novamente com outro");
+            return "redirect:/erro";
+        }
         if( result.hasErrors() ){
             System.out.println(result.toString());
-            return "redirect:/erros";
+            return "redirect:/erro";
         }
         cliente.setEnabled(true);
         cliente.setRole("ROLE_CLIENTE");
