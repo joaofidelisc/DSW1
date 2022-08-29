@@ -6,13 +6,17 @@ import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,26 +43,29 @@ public class ProfissionalController {
     
     @GetMapping("/cadastrar")
     public String cadastrar(Profissional profissional){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println("CONTEXTO:1\n\n\n\n");
+		System.out.println(authentication);
         return "profissional/cadastro";
     }
 
 
     @GetMapping("/listar")
     public String listar(ModelMap model, @RequestParam(required=false) String especialidade, @RequestParam(required=false) String areaDeConhecimento){
-        List<Profissional> profissionais = service.buscarTodos();
-		Set<String> especialidadeHash = new HashSet<String>();
-		System.out.println(areaDeConhecimento);
-		if (areaDeConhecimento != null && !areaDeConhecimento.isEmpty()){
-			profissionais = service.buscarPorAreaDeConhecimento(areaDeConhecimento);
-			for (Profissional profissional : profissionais){
-				String especialidadeAux = profissional.getEspecialidade();
-				if (!especialidadeHash.contains(especialidadeAux)){
-					especialidadeHash.add(especialidadeAux);
-				}
+		List<Profissional> profissionais = new ArrayList<>();
+		
+		if (areaDeConhecimento!= null){
+			String[] areasDeConhecimento = areaDeConhecimento.split(",");
+			for(String areaConhecimentoSelecionada : areasDeConhecimento){
+				profissionais.addAll(service.buscarPorAreaDeConhecimento(areaConhecimentoSelecionada));		
 			}
 		}
-		if (especialidade != null && !especialidade.isEmpty()){
-			profissionais = service.buscarPorEspecialidade(especialidade);
+		
+		if (especialidade!=null){
+			String[] especialidades = especialidade.split(",");
+			for(String especialidadeSelecionada : especialidades){
+				profissionais.addAll(service.buscarPorEspecialidade(especialidadeSelecionada));		
+			}
 		}
 
 		model.addAttribute("profissionais", profissionais);
@@ -69,7 +76,9 @@ public class ProfissionalController {
 
     @PostMapping("/salvar")
     public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file, BCryptPasswordEncoder encoder) throws IOException {
-        System.out.println("\n\n1");
+		System.out.println("CONTEXTO:2\n\n\n\n");
+
+		System.out.println("\n\n1");
 		String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
 		profissional.setQualificacoes(file.getBytes());
 		profissional.setNomeArquivo(nomeArquivo);
@@ -87,6 +96,7 @@ public class ProfissionalController {
 
         service.salvar(profissional);
         attr.addFlashAttribute("success", "profissional.create.success");
+
         return "redirect:/profissionais/listar";
     }
 
