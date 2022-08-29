@@ -3,7 +3,7 @@ package br.ufscar.dc.dsw.controller;
 //import java.util.List;
 import br.ufscar.dc.dsw.service.spec.*;
 
-import java.security.Security;
+//import java.security.Security;
 
 import javax.validation.Valid;
 
@@ -70,15 +70,8 @@ public class ConsultaController {
 
     @GetMapping("/agendar/{id_profissional}")
     public String agendar(@PathVariable("id_profissional") Long idP, Consulta consulta, ModelMap model){
-                Cliente cliente= getClienteLogado();
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        System.out.println("idC: " + cliente.getId());
-        System.out.println("idP: " + idP);
+        Cliente cliente= getClienteLogado();
         Profissional prof = profissionalService.buscarPorId(idP);
-        
-        
-        System.out.println("Cliente:" + cliente.getUsername());
-        System.out.println("Profissional:" + prof.getUsername());
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("profissional", prof);

@@ -40,7 +40,7 @@ public class ClienteController {
     public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
         if( result.hasErrors() ){
             System.out.println(result.toString());
-            return "cliente/cadastro";
+            return "redirect:/erros";
         }
         cliente.setEnabled(true);
         cliente.setRole("ROLE_CLIENTE");

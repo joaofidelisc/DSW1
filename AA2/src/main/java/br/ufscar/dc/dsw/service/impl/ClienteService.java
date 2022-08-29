@@ -30,6 +30,11 @@ public class ClienteService implements IClienteService{
 		return dao.findById(id.longValue());
 	}
 
+    @Transactional(readOnly = true)
+	public Cliente buscarPorCpf(Long cpf) {
+		return dao.findByCpf(cpf.longValue());
+	}
+
 	@Transactional(readOnly = true)
 	public List<Cliente> buscarTodos() {
 		return dao.findAll();

@@ -8,6 +8,8 @@ import br.ufscar.dc.dsw.domain.Cliente;
 public interface IClienteService {
     Cliente buscarPorId(Long Id);
 
+    Cliente buscarPorCpf(Long Id);
+
     List<Cliente> buscarTodos();
 
 	void salvar(Cliente cliente);
