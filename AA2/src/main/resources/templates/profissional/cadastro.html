@@ -120,7 +120,7 @@
 			<div class="col-5">
 				  <label for="formFile" class="form-label">Qualificações profissionais</label>
 				  <!-- <input type="file" class="form-control" id="nomeArquivo" name="nomeArquivo" th:field="*{nomeArquivo}"> -->
-				  <input type="file" class="form-control" id="file" name="file" accept="application/pdf"> 
+				  <input type="file" class="form-control" id="file" name="file" accept="application/pdf" th:text="*{nomeArquivo}"> 
                   <!-- <input class="form-control" type="file" name="file" accept="application/pdf" th:placeholder="Qualificações"/> -->
             </div>
 		
