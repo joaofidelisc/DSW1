@@ -47,9 +47,8 @@ public class ProfissionalController {
     public String listar(ModelMap model, @RequestParam(required=false) String especialidade, @RequestParam(required=false) String areaDeConhecimento){
         List<Profissional> profissionais = service.buscarTodos();
 		Set<String> especialidadeHash = new HashSet<String>();
-		System.out.println("1");
+		System.out.println(areaDeConhecimento);
 		if (areaDeConhecimento != null && !areaDeConhecimento.isEmpty()){
-			System.out.println(areaDeConhecimento);
 			profissionais = service.buscarPorAreaDeConhecimento(areaDeConhecimento);
 			for (Profissional profissional : profissionais){
 				String especialidadeAux = profissional.getEspecialidade();
@@ -58,8 +57,6 @@ public class ProfissionalController {
 				}
 			}
 		}
-		System.out.println("3");
-
 		if (especialidade != null && !especialidade.isEmpty()){
 			profissionais = service.buscarPorEspecialidade(especialidade);
 		}
@@ -141,5 +138,19 @@ public class ProfissionalController {
 			System.out.println("Error :- " + e.getMessage());
 			System.out.print("Error :- ");
 		}
+	}
+
+	
+	@GetMapping("/excluir/{id}")
+	// public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+		//se tem consulta agendada
+        //if (service.editoraTemLivros(id)) {
+			//model.addAttribute("fail", "editora.delete.fail");
+		//} else {
+			service.excluir(id);
+			attr.addAttribute("sucess", "profissional.delete.sucess");
+		//}
+		return "redirect:/profissionais/listar";
 	}
 }
