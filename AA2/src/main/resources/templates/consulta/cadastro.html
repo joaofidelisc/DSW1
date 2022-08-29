@@ -39,13 +39,13 @@
                 <div class="row mb-3">
                     <div class="col-3">
                         <label for="cliente.username" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="cliente.username" name="cliente.username">
-                        <!--th:value="${cliente.username}" readonly>-->
+                        <input type="text" class="form-control" id="cliente.username" name="cliente.username"
+                            th:value="${cliente.username}" readonly>
                     </div>
                     <div class="col-5">
                         <label for="cliente.name" class="form-label">Nome</label>
-                        <input class="form-control" id="cliente.name" name="cliente.name" >
-                        <!--th:value="${cliente.name}" readonly>-->
+                        <input class="form-control" id="cliente.name" name="cliente.name" 
+                        th:value="${cliente.name}" readonly>
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -56,13 +56,13 @@
                 <div class="row mb-3">
                     <div class="col-3">
                         <label for="profissional.username" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="profissional.username" name="profissional.username">
-                        <!--th:value="${profissional.username}" readonly>-->
+                        <input type="email" class="form-control" id="profissional.username" name="profissional.username"
+                            th:value="${profissional.username}" readonly>
                     </div>
                     <div class="col-5">
                         <label for="profissional.name" class="form-label">Nome</label>
-                        <input class="form-control" id="profissional.name" name="profissional.name">
-                            <!--th:value="${profissional.name}" readonly>-->
+                        <input class="form-control" id="profissional.name" name="profissional.name"
+                            th:value="${profissional.name}" readonly>
                     </div>
                 </div>
                 <div class="row">
@@ -97,8 +97,9 @@
 
                 <input type="hidden" class="form-control" th:field="*{id}">
                 <input type="hidden" class="form-control" th:field="*{cancelada}">
-                <input type="hidden" class="form-control" name="cliente_id">
-                <input type="hidden" class="form-control" name="profissional_id">
+                <input type="hidden" class="form-control" th:field="*{cliente}" th:value="${cliente}">
+                <input type="hidden" class="form-control" th:field="*{profissional}" th:value="${profissional}">
+                <input type="hidden" class="form-control" name="id_profissional" th:value="${profissional.id}">
             </div>
         </div>
     </form>
