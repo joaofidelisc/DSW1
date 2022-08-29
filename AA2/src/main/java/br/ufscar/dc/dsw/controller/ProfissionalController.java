@@ -52,7 +52,7 @@ public class ProfissionalController {
 
     @GetMapping("/listar")
     public String listar(ModelMap model, @RequestParam(required=false) String especialidade, @RequestParam(required=false) String areaDeConhecimento){
-		List<Profissional> profissionais = new ArrayList<>();
+		List<Profissional> profissionais = service.buscarTodos();
 		
 		if (areaDeConhecimento!= null){
 			String[] areasDeConhecimento = areaDeConhecimento.split(",");
