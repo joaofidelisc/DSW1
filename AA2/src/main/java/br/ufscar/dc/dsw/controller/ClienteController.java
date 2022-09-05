@@ -2,7 +2,6 @@ package br.ufscar.dc.dsw.controller;
 
 //import java.util.List;
 import br.ufscar.dc.dsw.service.spec.IClienteService;
-import br.ufscar.dc.dsw.service.spec.IProfissionalService;
 
 import javax.validation.Valid;
 
@@ -43,7 +42,9 @@ public class ClienteController {
     @PostMapping("/salvar")
     public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
         if( userDao.findBycpf( cliente.getCpf()) != null ){
-            attr.addFlashAttribute("erro", "CPF já foi cadastrado. Tente novamente com outro");
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            System.out.println("--------------------------------------ERROS DO SISTEMA--------------------------------------");
+            System.out.println("CPF já foi cadastrado, tente novamente com um outro CPF");
             return "redirect:/erro";
         }
         if( result.hasErrors() ){

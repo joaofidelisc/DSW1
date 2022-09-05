@@ -22,7 +22,7 @@ public class Aa2Application {
 	public CommandLineRunner demo(IUserDAO usuarioDAO, BCryptPasswordEncoder encoder) {
 		return (args) -> {
 		 	// User user = new User();
-		    // 	user.setCpf("440.714.818-70");
+		    // 	user.setCpf("44071481870");
 		    // 	user.setEnabled(true);
 		    // 	user.setName("Luiz Lipe");
 		    // 	user.setPassword(encoder.encode("123"));
@@ -47,7 +47,7 @@ public class Aa2Application {
 			// client2.setName("Matteus Souza");
 			// client2.setPassword(encoder.encode("123"));
 			// client2.setRole("ROLE_PROF");
-			// client2.setCpf("11111111111111");
+			// client2.setCpf("99999999900");
 			// client2.setAreaDeConhecimento("Medicina");
             // 		client2.setEspecialidade("Cardiologista");
             // 		client2.setNomeArquivo("arq.pdf");

@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.ufscar.dc.dsw.dao.IUserDAO;
 import br.ufscar.dc.dsw.domain.Profissional;
 
 @Controller
@@ -40,6 +41,9 @@ public class ProfissionalController {
     
     @Autowired
     private IProfissionalService service;
+
+    @Autowired
+    private IUserDAO userDao;
     
     @GetMapping("/cadastrar")
     public String cadastrar(Profissional profissional){
@@ -50,23 +54,30 @@ public class ProfissionalController {
     }
 
 
+
     @GetMapping("/listar")
     public String listar(ModelMap model, @RequestParam(required=false) String especialidade, @RequestParam(required=false) String areaDeConhecimento){
-		List<Profissional> profissionais = service.buscarTodos();
+		List<Profissional> profissionais = new ArrayList<>();
 		
-		if (areaDeConhecimento!= null){
-			String[] areasDeConhecimento = areaDeConhecimento.split(",");
-			for(String areaConhecimentoSelecionada : areasDeConhecimento){
-				profissionais.addAll(service.buscarPorAreaDeConhecimento(areaConhecimentoSelecionada));		
+		if (areaDeConhecimento != null || especialidade != null){
+			if (areaDeConhecimento!= null){
+				String[] areasDeConhecimento = areaDeConhecimento.split(",");
+				for(String areaConhecimentoSelecionada : areasDeConhecimento){
+					profissionais.addAll(service.buscarPorAreaDeConhecimento(areaConhecimentoSelecionada));		
+				}
 			}
-		}
-		
-		if (especialidade!=null){
-			String[] especialidades = especialidade.split(",");
-			for(String especialidadeSelecionada : especialidades){
-				profissionais.addAll(service.buscarPorEspecialidade(especialidadeSelecionada));		
+			
+			if (especialidade!=null){
+				String[] especialidades = especialidade.split(",");
+				for(String especialidadeSelecionada : especialidades){
+					profissionais.addAll(service.buscarPorEspecialidade(especialidadeSelecionada));		
+				}
 			}
+		} else if (areaDeConhecimento == null && especialidade == null){
+			profissionais = service.buscarTodos();
 		}
+
+		System.out.println(profissionais);
 
 		model.addAttribute("profissionais", profissionais);
         return "profissional/lista"; 
@@ -75,17 +86,22 @@ public class ProfissionalController {
 
 
     @PostMapping("/salvar")
-    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file, BCryptPasswordEncoder encoder) throws IOException {
-		System.out.println("CONTEXTO:2\n\n\n\n");
-
-		System.out.println("\n\n1");
-		String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
+    public String salvar(@Valid Profissional profissional, BindingResult result, RedirectAttributes attr, @RequestParam("file") MultipartFile file, BCryptPasswordEncoder encoder) throws IOException {        
+        String nomeArquivo = StringUtils.cleanPath(file.getOriginalFilename());
 		profissional.setQualificacoes(file.getBytes());
 		profissional.setNomeArquivo(nomeArquivo);
 		System.out.println(profissional.getNomeArquivo());
 
+        if( userDao.findBycpf( profissional.getCpf()) != null ){
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            System.out.println("--------------------------------------ERROS DO SISTEMA--------------------------------------");
+            System.out.println("CPF já foi cadastrado, tente novamente com um outro CPF");
+            return "redirect:/erro";
+        }
+
 		if( result.hasErrors() ){
 			System.out.println(result.toString());
+            
             return "profissional/cadastro";
         }
 		System.out.println("\n\n2");

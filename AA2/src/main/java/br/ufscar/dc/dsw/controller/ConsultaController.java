@@ -3,6 +3,8 @@ package br.ufscar.dc.dsw.controller;
 //import java.util.List;
 import br.ufscar.dc.dsw.service.spec.*;
 
+import java.util.List;
+
 //import java.security.Security;
 
 import javax.validation.Valid;
@@ -73,9 +75,10 @@ public class ConsultaController {
     public String agendar(@PathVariable("id_profissional") Long idP, Consulta consulta, ModelMap model){
         Cliente cliente= getClienteLogado();
         Profissional prof = profissionalService.buscarPorId(idP);
-
+        
         model.addAttribute("cliente", cliente);
         model.addAttribute("profissional", prof);
+
         return "consulta/cadastro";
     }
 
@@ -83,14 +86,59 @@ public class ConsultaController {
         
     @PostMapping("/salvar")
     public String salvar(@Valid Consulta consulta, BindingResult result, RedirectAttributes attr, Long id_profissional) {
+        Cliente cliente= getClienteLogado();
         if( result.hasErrors() ){
             System.out.println("AQUI Ó\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
             System.out.println(result.toString());
             return "cliente/cadastro";
         }
         consulta.setCancelada("false");
-        consulta.setCliente( getClienteLogado()  );
+        consulta.setCliente( getClienteLogado() );
         consulta.setProfissional( profissionalService.buscarPorId( id_profissional ) );
+
+        boolean deuProblema = false;
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UsuarioDetails user = (UsuarioDetails) auth.getPrincipal();
+        //se cliente logado, vamos ver se ele tem disponibilidade para a consulta
+        if( user.getUsuario().getRole().equals("ROLE_CLIENTE")){
+            List<Consulta> consultasCliente = service.buscarTodosPorIdCliente( cliente.getId() );
+            List<Consulta> consultasProf = service.buscarTodosPorIdProfissional( consulta.getProfissional().getId() );
+            System.out.println(consultasProf);
+
+            for( Consulta e : consultasCliente){
+                if( e.getCliente().getId() == consulta.getCliente().getId() ){//se cliente tem é o mesmo do elemento e
+                    if( e.getDataConsulta().equals(consulta.getDataConsulta()) ){//se cliente ja tem consulta marcada no mesmo dia
+                        if( e.getHoraConsulta().equals(consulta.getHoraConsulta()) ){//se cliente tem consulta marcada no mesmo dia e horário
+                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            System.out.println("--------------------------------------ERROS DO SISTEMA--------------------------------------");
+                            System.out.println("Não foi possível agendar uma consulta. Você já tem uma consulta marcada nesse horário!");
+                            System.out.println("--------------------------------------ERROS DO SISTEMA--------------------------------------");
+                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            deuProblema = true;
+                        }
+                    }
+                    
+                }
+            }
+            for( Consulta e : consultasProf){
+                if( e.getProfissional().getId() == consulta.getProfissional().getId() ){//se cliente tem é o mesmo do elemento e
+                    if( e.getDataConsulta().equals(consulta.getDataConsulta()) ){//se cliente ja tem consulta marcada no mesmo dia
+                        if( e.getHoraConsulta().equals(consulta.getHoraConsulta()) ){//se cliente tem consulta marcada no mesmo dia e horário
+                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            System.out.println("--------------------------------------ERROS DO SISTEMA--------------------------------------");
+                            System.out.println("Não foi possível agendar uma consulta. O profissional selecionado não está disponível!");
+                            System.out.println("--------------------------------------ERROS DO SISTEMA--------------------------------------");
+                            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                            deuProblema = true;
+                        }
+                    }
+                }
+            }
+        }
+        if(deuProblema)
+            return "redirect:/consultas/listar";
+            
         service.salvar(consulta);
 
         attr.addFlashAttribute("success", "consulta.create.success");
